@@ -45,3 +45,14 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
     Overtekk/Codexion on GitHub explains the concepts in its README without sharing the actual subject PDF or graded code, which respects 42 rules but still teaches the ideas: https://github.com/Overtekk/Codexion
 
     My honest suggestion given how you described feeling about Fly-in: start with the Codexion Visualizer link above and just play with the parameters for 15 minutes before reading anything else. Seeing the starvation/deadlock happen on screen tends to make the "why do I need a mutex here" question answer itself.
+
+## DAY 1 [Sept 1]
+- Learning about pthreads, how to use them , how they work etc:
+    1. A done example and yt explanation:
+        https://www.youtube.com/watch?v=UGQsvVKwe90
+        https://github.com/Jamshidbek2000/philosophers_42
+    2. A good deep resource book on thread: https://github.com/freebendy/ben-books/tree/master
+    3. Introduction to thread: https://www.youtube.com/watch?v=ldJ8WGZVXZk
+    4. Mutex introduction : https://www.youtube.com/watch?v=raLCgPK-Igc 
+    5. Threads in C: https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2
+    6. Guide: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
