@@ -1,0 +1,47 @@
+# THIS IS CODEXION
+
+### DAY 0[Aug 31]
+- Understand basics from what is philosophers dining, forks, etc
+- From claude, references: it's essentially 42's newer "coders competing for dongles" spin on the classic Dining Philosophers problem: multiple threads racing for a limited shared resource pool, using pthread mutexes/condition variables, with FIFO or EDF scheduling and starvation/deadlock as the core danger.
+
+1. Concept first — the Dining Philosophers problem itself
+This is the theory Codexion is built on (coders = philosophers, dongles = forks).
+
+    "Dining Philosophers Problem with Solution" – https://www.youtube.com/watch?v=NbwbQQB7xNQ
+    Neso Academy, "Dining Philosophers Solution using Monitors" – https://www.youtube.com/watch?v=K52NiClfvyE (good for understanding deadlock/starvation avoidance conceptually before touching code)
+
+2. pthreads basics in C
+
+    "Mutex Introduction (pthreads) | C Programming Tutorial" – https://www.youtube.com/watch?v=raLCgPK-Igc (Portfolio Courses — clean, C-specific, shows race conditions and how mutexes fix them)
+    https://www.youtube.com/watch?v=oq29KUy29iQ&pp=ugUEEgJlbg%3D%3D: code vault mutex
+
+3. Condition variables (you'll need these for coordinating dongle availability/wakeups)
+
+    "Pthread Condition Variables" (Udacity OS course clip) – https://www.youtube.com/watch?v=eQOaaDA92SI
+
+4. Reference reading once the above clicks
+
+    The GeeksforGeeks writeups on pthread_cond_wait/pthread_cond_signal are good for pinning down exact syntax when you start coding: https://www.geeksforgeeks.org/condition-wait-signal-multi-threading/
+
+    A note on scheduling: Codexion's FIFO vs EDF scheduler argument is the part that goes beyond classic Philosophers — EDF (Earliest Deadline First) is a real-time scheduling algorithm. If your subject actually requires implementing EDF logic, it's worth a separate 10-minute search on "Earliest Deadline First scheduling explained" once you're past the threading basics, since that's a distinct concept from the mutex/condvar stuff above.
+
+    Suggested order: watch #1 and #2 first (understand why the problem is hard), then #3 (the actual pthread mechanics), then go straight to writing code — this is a project where reading the subject PDF closely and experimenting will teach you more than more videos will.
+
+    Those visualizer tools are overkill/off-target for what you need. Here's a more useful, curated list — mixing written guides, a visual tool, and reference material specific to this kind of project:
+
+    Written walkthroughs (often clearer than video for this topic)
+
+    The dev.to "Thread in C (Codexion 42)" article you'll find alongside my earlier search — it's a chapter-by-chapter breakdown written specifically for this project, covering what pthread_create actually does under the hood, what's shared vs private between threads, and timing (wall clock vs monotonic). Worth reading slowly: https://dev.to/yel-bakk/thread-in-c-codexion-42-1ao
+    "Solving the Dining Philosophers Problem with Mutex Locks and C Programming" (Medium) — walks through actual C code structured like a 42-style philosophers project (t_rcs structs, monitor thread, etc.), close to what Codexion needs: https://apoorvasn.medium.com/solving-the-dining-philosophers-problem-with-mutex-locks-and-c-programming-cee5ac8d35e7
+    CodeLucky's "Dining Philosophers: Classic Concurrency Problem Explained Visually and Practically" — has diagrams showing deadlock and starvation happening step by step: https://codelucky.com/dining-philosophers/
+
+    A tool built for exactly this project
+
+    Codexion Visualizer — an interactive tool made for 42 students specifically to watch coders/dongles/scheduler behavior in real time: https://codexion-visualizer.sacha-dev.me/
+    This is probably your single best resource: you can watch FIFO vs EDF scheduling play out visually before you write a line of C.
+
+    Reference repos (read, don't copy)
+
+    Overtekk/Codexion on GitHub explains the concepts in its README without sharing the actual subject PDF or graded code, which respects 42 rules but still teaches the ideas: https://github.com/Overtekk/Codexion
+
+    My honest suggestion given how you described feeling about Fly-in: start with the Codexion Visualizer link above and just play with the parameters for 15 minutes before reading anything else. Seeing the starvation/deadlock happen on screen tends to make the "why do I need a mutex here" question answer itself.
