@@ -55,4 +55,11 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
     3. Introduction to thread: https://www.youtube.com/watch?v=ldJ8WGZVXZk
     4. Mutex introduction : https://www.youtube.com/watch?v=raLCgPK-Igc 
     5. Threads in C: https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2
-    6. Guide: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
+    6. Study Guide: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
+
+## DAY 2 [Sept 2]
+- Reading through i get an idea that Monitor Pattern with Condition Variables. is the best solution for N number of philosophers and forks.
+
+    1. Monitors and conditional variables: https://home.cs.colorado.edu/~rhan/CSCI_3753_Spring_2005/CSCI_3753_Spring_2005/Lectures/02_22_05_dp_mon_cv.pdf
+    2. before which lets see a video on all these: https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2&index=1
+    

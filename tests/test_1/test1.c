@@ -21,11 +21,17 @@ int main()
     int deposit1 = 300;
     int deposit2 = 200;
 
-    pthread_create(&thread1, NULL, deposit, (void*) &deposit1);
-    pthread_create(&thread2, NULL, deposit, (void*) &deposit2);
+    if (pthread_create(&thread1, NULL, deposit, (void*) &deposit1) != 0)
+        return 1;
 
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL);
+    if (pthread_create(&thread2, NULL, deposit, (void*) &deposit2) != 0)
+        return 2;
+
+    if (pthread_join(thread1, NULL) != 0)
+        return 3;
+
+    if (pthread_join(thread2, NULL) != 0)
+        return 4:
 
     pthread_mutex_destroy(&mutex);
 
