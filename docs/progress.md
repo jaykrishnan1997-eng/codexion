@@ -1,6 +1,7 @@
 # THIS IS CODEXION
 
 ### DAY 0[Aug 31]
+
 - Understand basics from what is philosophers dining, forks, etc
 - From claude, references: it's essentially 42's newer "coders competing for dongles" spin on the classic Dining Philosophers problem: multiple threads racing for a limited shared resource pool, using pthread mutexes/condition variables, with FIFO or EDF scheduling and starvation/deadlock as the core danger.
 
@@ -47,6 +48,7 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
     My honest suggestion given how you described feeling about Fly-in: start with the Codexion Visualizer link above and just play with the parameters for 15 minutes before reading anything else. Seeing the starvation/deadlock happen on screen tends to make the "why do I need a mutex here" question answer itself.
 
 ## DAY 1 [Sept 1]
+
 - Learning about pthreads, how to use them , how they work etc:
     1. A done example and yt explanation:
         https://www.youtube.com/watch?v=UGQsvVKwe90
@@ -58,8 +60,48 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
     6. Study Guide: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
 
 ## DAY 2 [Sept 2]
+
 - Reading through i get an idea that Monitor Pattern with Condition Variables. is the best solution for N number of philosophers and forks.
 
     1. Monitors and conditional variables: https://home.cs.colorado.edu/~rhan/CSCI_3753_Spring_2005/CSCI_3753_Spring_2005/Lectures/02_22_05_dp_mon_cv.pdf
     2. before which lets see a video on all these: https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2&index=1
     
+## DAY 3 [Sept 3]
+
+- Tried some more videos and coding to understand what pthread, mutex etx are and why they are necessary. Also more focus on the return values from thread and passing arguments. All thanks to codevault videos.
+
+## DAY 4 [Sept 4]
+
+- Starting with structures after reading the subject carefully. Also must do a simple parsing start.
+
+- PLAN:
+
+        main.c
+            ↓
+        starts the program
+
+        init.c
+            ↓
+        creates/initializes everything
+
+        threads.c
+            ↓
+        starts/stops threads
+
+        routine.c
+            ↓
+        what each coder actually does
+
+        actions.c
+            ↓
+        compile/debug/refactor behaviour
+
+        monitor.c
+            ↓
+        checks whether coders are burning out
+
+        cleanup.c
+            ↓
+        destroys everything
+
+
