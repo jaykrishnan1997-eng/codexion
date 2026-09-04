@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/04 12:16:49 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/04 14:42:10 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv){
     else
         {
             t_data *data; 
-            data = parser(argv);   
+            data = parser(argc, argv);   
         }
     
 }

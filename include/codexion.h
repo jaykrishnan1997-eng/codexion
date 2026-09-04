@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/04 12:34:27 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/04 14:38:19 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 typedef struct s_data t_data;
 
 typedef	struct	s_coder {
-    long	coder_id
-    long	burnout_time
-    long	compile_time
-    long	debug_time
-    long	refractor_time
-    long	no_of_compiles
+    int 	coder_id
+    int 	burnout_time
+    int	    compile_time
+    int	    debug_time
+    int	    refractor_time
+    int	    no_of_compiles
     char	*current_state
 
 	pthread_t	thread;
@@ -36,13 +36,13 @@ typedef	struct	s_coder {
 } t_coder;
 
 typedef	struct	s_data {
-    int		num_coders
-    long	time_to_burnout
-    long	time_to_compile
-    long	time_to_debug
-    long	time_to_refractor
-    long	required_compiles
-    long	dongle_cooldown
+    int     num_coders
+    int     time_to_burnout
+    int     time_to_compile
+    int     time_to_debug
+    int     time_to_refractor
+    int	    required_compiles
+    int	    dongle_cooldown
 
 	char	*scheduler
 	
@@ -83,8 +83,8 @@ typedef struct  s_request {
 // void    destroy_mutexes(t_data *data);
 
 // /* utilities */
-// long    get_time(void);
-// void    precise_sleep(long milliseconds);
+// int    get_time(void);
+// void    precise_sleep(int milliseconds);
 
 // /* cleanup */
 // void    cleanup(t_data *data);
