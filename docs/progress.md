@@ -71,37 +71,39 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
 - Tried some more videos and coding to understand what pthread, mutex etx are and why they are necessary. Also more focus on the return values from thread and passing arguments. All thanks to codevault videos.
 
 ## DAY 4 [Sept 4]
+- todays work:
 
-- Starting with structures after reading the subject carefully. Also must do a simple parsing start.
+    1. Starting with structures after reading the subject carefully. Also must do a simple parsing start.
 
-- PLAN:
+    2. PLAN:
 
-        main.c
-            ↓
-        starts the program
+            main.c
+                ↓
+            starts the program
 
-        init.c
-            ↓
-        creates/initializes everything
+            init.c
+                ↓
+            creates/initializes everything
 
-        threads.c
-            ↓
-        starts/stops threads
+            threads.c
+                ↓
+            starts/stops threads
 
-        routine.c
-            ↓
-        what each coder actually does
+            routine.c
+                ↓
+            what each coder actually does
 
-        actions.c
-            ↓
-        compile/debug/refactor behaviour
+            actions.c
+                ↓
+            compile/debug/refactor behaviour
 
-        monitor.c
-            ↓
-        checks whether coders are burning out
+            monitor.c
+                ↓
+            checks whether coders are burning out
 
-        cleanup.c
-            ↓
-        destroys everything
+            cleanup.c
+                ↓
+            destroys everything
 
+    3. I am planning to make a linked list for the request since i dont habve request for that. Its nice if i could also hold a stat for coder. Like C, L, R, where C is the coder, L is left dongle and R is right one. Problem must L AND R be static or dynamic that appears as per request and needs.
 

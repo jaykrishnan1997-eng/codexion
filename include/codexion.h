@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/04 11:05:57 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/04 12:34:27 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 # define CODEXION_H
 
 # include <pthread.h>
+# include <heapq>
 
 typedef struct s_data t_data;
 
 typedef	struct	s_coder {
-    long	num_coders
+    long	coder_id
     long	burnout_time
     long	compile_time
     long	debug_time
     long	refractor_time
     long	no_of_compiles
-    char	current_state
+    char	*current_state
 
 	pthread_t	thread;
 	
@@ -35,7 +36,7 @@ typedef	struct	s_coder {
 } t_coder;
 
 typedef	struct	s_data {
-    int		coder_id
+    int		num_coders
     long	time_to_burnout
     long	time_to_compile
     long	time_to_debug
@@ -43,12 +44,17 @@ typedef	struct	s_data {
     long	required_compiles
     long	dongle_cooldown
 
-	char	scheduler
+	char	*scheduler
 	
 	t_coder	*coders;
 	
 	int	simulation_over;
 } t_data;
+
+typedef struct  s_request {
+    t_coder *coder;
+    struct  s_request *next;
+} t_request;
 
 #endif
 
