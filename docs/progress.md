@@ -58,6 +58,7 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
     4. Mutex introduction : https://www.youtube.com/watch?v=raLCgPK-Igc 
     5. Threads in C: https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2
     6. Study Guide: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
+    7. CV Unix Thread in C: https://www.youtube.com/watch?v=d9s_d28yJq0 list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2
 
 ## DAY 2 [Sept 2]
 

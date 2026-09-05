@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/04 14:38:19 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/05 12:27:09 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,59 @@
 # define CODEXION_H
 
 # include <pthread.h>
-# include <heapq>
 
 typedef struct s_data t_data;
 
+typedef struct s_dongle {
+    pthread_mutex_t	mutex;
+	pthread_cond_t  cond;
+    int             in_use;
+    long            available_at; // timestamp (ms) when cooldown ends
+} t_dongle;
+
 typedef	struct	s_coder {
-    int 	coder_id
-    int 	burnout_time
-    int	    compile_time
-    int	    debug_time
-    int	    refractor_time
-    int	    no_of_compiles
-    char	*current_state
+    int 	    coder_id;
+    int 	    burnout_time;
+    int	        compile_time;
+    int	        debug_time;
+    int	        refractor_time;
+    int	        no_of_compiles;
+    char	    current_state;
 
 	pthread_t	thread;
 	
-	pthread_mutex_t	*left_dongle;
-	pthread_mutex_t *right_dongle;
+	t_dongle	*left_dongle;
+	t_dongle    *right_dongle;
 	
-	t_data	*data;
+	t_data	    *data;
 } t_coder;
 
 typedef	struct	s_data {
-    int     num_coders
-    int     time_to_burnout
-    int     time_to_compile
-    int     time_to_debug
-    int     time_to_refractor
-    int	    required_compiles
-    int	    dongle_cooldown
+    int         num_coders;
+    int         time_to_burnout;
+    int         time_to_compile;
+    int         time_to_debug;
+    int         time_to_refractor;
+    int	        required_compiles;
+    int	        dongle_cooldown;
 
-	char	*scheduler
+	char	    *scheduler;
 	
-	t_coder	*coders;
+    t_dongle    *dongles;
+	t_coder		*coders;
 	
-	int	simulation_over;
+	int			simulation_over;
 } t_data;
 
 typedef struct  s_request {
-    t_coder *coder;
-    struct  s_request *next;
+    t_coder 			*coder;
+    struct  s_request 	*next;
 } t_request;
 
 #endif
 
 
-
+//  coders[i].left_dongle = &data->dongles[i]
 // /* initialization */
 // int     init_data(t_data *data);
 

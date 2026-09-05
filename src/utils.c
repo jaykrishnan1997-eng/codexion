@@ -6,11 +6,12 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/04 15:34:18 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/05 11:10:29 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdbool.h>
 
 bool    checkin(char c, char *str) {
 
@@ -18,10 +19,12 @@ bool    checkin(char c, char *str) {
     int length;
 
     length = strlen(str);
-    for (i = 0; i < length; i++) {
+    while (i < length) {
+
         if (c == str[i])
-            return true
+            return (true);
+        i++;
     }
-    return false
+    return (false);
 }
 
