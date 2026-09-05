@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/05 12:28:19 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/05 19:13:43 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ int parser(int argc, char **argv, t_data *data)
     data->scheduler = argv[8]; // sch
     
     return (0);
-
-
 }
 
+void init_dongles()
     
     // Write an init_dongles() function (in a new file, e.g. init_dongles.c) that:
     // Allocates the dongle array (malloc, size = num_coders).

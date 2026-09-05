@@ -33,6 +33,11 @@ void *car(void *arg){
 		// that may or may not change the condition
 		// this guy is triggered when he recieves signal
 		pthread_cond_wait(&condFuel, &mutexFuel);
+		// Equivalent to :
+		// pthread_mutex_unlock(&mutexFuel);
+		// wait for signal on condFuel
+		// pthread_mutex_lock(&mutexFuel);
+
 	}
 	fuel -= 40;
 	printf("Got fuel. Now left: %d\n", fuel);

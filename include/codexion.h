@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/05 12:27:09 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/05 19:13:43 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 typedef struct s_data t_data;
 
 typedef struct s_dongle {
+    int             dongle_id;
     pthread_mutex_t	mutex;
 	pthread_cond_t  cond;
     int             in_use;
@@ -35,7 +36,8 @@ typedef	struct	s_coder {
 
 	pthread_t	thread;
 	
-	t_dongle	*left_dongle;
+	
+    t_dongle	*left_dongle;
 	t_dongle    *right_dongle;
 	
 	t_data	    *data;
