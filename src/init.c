@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/05 19:13:43 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/07 09:55:56 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,47 @@ int parser(int argc, char **argv, t_data *data)
     return (0);
 }
 
-void init_dongles()
-    
-    // Write an init_dongles() function (in a new file, e.g. init_dongles.c) that:
-    // Allocates the dongle array (malloc, size = num_coders).
-    // Loops through and calls pthread_mutex_init and pthread_cond_init on each dongle, 
-    // sets in_use = 0, available_at = 0.
+t_dongle	*init_dongles(t_data *data) {
+    int			d;
+    // list of pointers with address to dongles
+    t_dongle 	*dongles;
+	
+	dongles = malloc(sizeof(t_dongle) * data->num_coders);
+	if (!dongles)
+		return (NULL);
+    d = 0;
 
-    // Returns success/failure (handle malloc failure).
+    while (d < data->num_coders)
+    {
+		pthread_mutex_init(&dongles[d].mutex, NULL);
+    	pthread_cond_init(&dongles[d].cond, NULL);
+		dongles[d].in_use = 0;
+		dongles[d].available_at = 0;
+		d++;
+    }
+    return (dongles);
+}
 
+int	init_coders(t_data *data, t_dongle *dongles) {
+    int c;
+    // list of pointers with address to dongles
+	
+	data->coders = malloc(sizeof(t_coder) * data->num_coders);
+	if (!data->coders)
+		return (-1);
+    c = 0;
+    while (c < data->num_coders)
+    {
+        data->coders[c].coder_id = c;
+		data->coders[c].no_of_compiles = 0;
+		data->coders[c].current_state = "idle";
+		data->coders[c].left_dongle = &dongles[c];
+		data->coders[c].right_dongle = &dongles[(c + 1) % data->num_coders];
+		data->coders[c].data = data;
+		data->coders[c].last_compile_start = 0;
+		c++;
+    }
+    return (0);
+}
 
-
-    // Write an init_coders() function that allocates the coder array and wires up each 
-    // coder's left_dongle/right_dongle pointers into the shared dongle array (remember: 
-    // coder i's left dongle and coder i-1's right dongle should be the same dongle — that's
-    //  the whole point of the shared pool).
-    
     // Call both of these from main() after parser() succeed
