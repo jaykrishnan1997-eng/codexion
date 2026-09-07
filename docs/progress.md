@@ -108,3 +108,14 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
 
     3. I am planning to make a linked list for the request since i dont habve request for that. Its nice if i could also hold a stat for coder. Like C, L, R, where C is the coder, L is left dongle and R is right one. Problem must L AND R be static or dynamic that appears as per request and needs.
 
+## DAY 4 [Sept 5]
+
+    I was learning more on pthread conditions from video 10 in Codevault youtube video. 
+
+## DAY 5 [Sept 7]
+
+    Something on how to create a heap in C:
+        1. https://github.com/charJe/heap
+        2. https://gist.github.com/nyorain/468f4450b0b6585ac04100199485cde1
+        3. https://www.youtube.com/watch?v=pAU21g-jBiE
+        4. https://www.youtube.com/watch?v=0wPlzMU-k00

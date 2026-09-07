@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 12:54:32 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/07 13:37:27 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ typedef struct s_dongle {
     long            available_at; // timestamp (ms) when cooldown ends
 	t_heap			request_heap;
 } t_dongle;
+
+typedef struct s_heap_node {
+	t_coder *coder;
+	long	sequence;
+	long	deadline;
+} t_heap_node;
 
 typedef struct s_heap {
     t_head_node *nodes;
