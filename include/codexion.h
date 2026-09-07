@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 13:37:27 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/07 18:06:17 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,21 @@ typedef	struct	s_coder {
 } t_coder;
 
 typedef	struct	s_data {
-    int         num_coders;
-    int         time_to_burnout;
-    int         time_to_compile;
-    int         time_to_debug;
-    int         time_to_refractor;
-    int	        required_compiles;
-    int	        dongle_cooldown;
+    int             num_coders;
+    int             time_to_burnout;
+    int             time_to_compile;
+    int             time_to_debug;
+    int             time_to_refractor;
+    int	            required_compiles;
+    int	            dongle_cooldown;
 
-	char	    *scheduler;
+	char	        *scheduler;
 	
-    t_dongle    *dongles;
-	t_coder		*coders;
+    t_dongle        *dongles;
+	t_coder		    *coders;
 	
-    long        start_time;
-	int			simulation_over;
+    long            start_time;
+	int			    simulation_over;
     pthread_mutex_t log_mutex;
     pthread_mutex_t sim_mutex; // to protect simulation_over
 } t_data;

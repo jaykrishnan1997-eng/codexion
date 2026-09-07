@@ -3,39 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 13:18:46 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 14:02:31 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/07 20:52:37 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	heap_insert(t_heap *heap, t_hea, t_data *data) {
-    int i;
+static int is_smaller(t_heap_node a, t_heap_node b, char *scheduler)
+{
+	if (strcmp(scheduler, "fifo") == 0)
+		return (a.sequence < b.sequence);
+	else
+		return (a.deadline < b.deadline);
+}
 
-    heap->nodes[heap->size] = new_node;
-    i = 
-    if (!heap) {
-        t_coder *nodes_list;
-        nodes_list = malloc(sizeof(t_coder) * data.num_coders);  
-    }
-    nodes_list.append[coder];
+void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler) {
+    int			i;
+	int 		parent;
+	t_heap_node	temp;
+
+	heap->nodes[heap->size] = new_node;
+	i = heap->size;
+	heap->size++;
+
+	while (i > 0) {
+		parent = (i - 1) / 2;
+		if (is_smaller(heap->nodes[i], heap->nodes[parent], scheduler))
+		{
+			swap = heap->nodes[i];
+			heap->nodes[i] = heap->nodes[parent];
+			heap->nodes[parent] = swap;
+			i = parent;
+		}
+		else
+			break;
+	}
 }
 
 void	heap_extract_min() {
     
 }
-
-// void heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler)
-// {
-//     int i;
-
-//     heap->nodes[heap->size] = new_node;
-//     i = heap->size;
-//     heap->size++;
-
-//     // TODO: while i has a parent, and new_node is "smaller" than the parent
-//     //       (using the scheduler comparator),
-//     //       swap heap->nodes[i] with heap->nodes[parent],
-//     //       then move i to parent's index, and repeat.
-// }
