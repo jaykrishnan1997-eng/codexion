@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 18:06:17 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/08 09:45:32 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,20 @@
 
 # include <pthread.h>
 
-typedef struct s_data t_data;
+typedef struct  s_data t_data;
+typedef struct  s_coder t_coder;
+
+typedef struct s_heap_node {
+	t_coder *coder;
+	long	sequence;
+	long	deadline;
+} t_heap_node;
+
+typedef struct s_heap {
+    t_heap_node *nodes;
+    int         size;
+    int         capacity;
+} t_heap;
 
 typedef struct s_dongle {
     int             dongle_id;
@@ -26,26 +39,11 @@ typedef struct s_dongle {
 	t_heap			request_heap;
 } t_dongle;
 
-typedef struct s_heap_node {
-	t_coder *coder;
-	long	sequence;
-	long	deadline;
-} t_heap_node;
-
-typedef struct s_heap {
-    t_head_node *nodes;
-    int         size;
-    int         capacity;
-} t_heap;
-
 typedef	struct	s_coder {
     int 	    coder_id;
     int	        no_of_compiles;
     char	    *current_state;
-
 	pthread_t	thread;
-	
-	
     t_dongle	*left_dongle;
 	t_dongle    *right_dongle;
 	t_data	    *data;
@@ -79,12 +77,12 @@ typedef struct  s_request {
 
 
 // /* heap */
-void	heap_insert();
-void	heap_extract_min();
+void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler);
+t_heap_node	heap_extract_min(t_heap *heap, char *scheduler);
 
 /* initialization */
 int     init_data(t_data *data);
-int     init_coders(t_data *data);
+int     init_coders(t_data *data, t_dongle *dongles);
 t_dongle *init_dongles(t_data *data);
 
 /* threads */

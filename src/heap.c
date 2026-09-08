@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 13:18:46 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 20:52:37 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/08 09:32:03 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler) {
 	int 		parent;
 	t_heap_node	temp;
 
+	// add the new node at the end then sort them from min to max
 	heap->nodes[heap->size] = new_node;
 	i = heap->size;
 	heap->size++;
@@ -41,6 +42,33 @@ void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler) {
 	}
 }
 
-void	heap_extract_min() {
-    
+t_heap_node	heap_extract_min(t_heap *heap, char *scheduler) {
+	int			i;
+	int			left;
+	int			right;
+	int			smallest;
+	t_heap_node	min;
+	t_heap_node	temp;
+	
+	min = heap->node[0];
+	heap->size--;
+	heap->node[0] = heap->node[heap->size];
+	i = 0;
+	while (1) {
+		left = 2 * i + 1;
+		right = 2 * i + 2;
+		smallest = i;
+		
+		if (left < heap->size && is_smaller(heap->nodes[left], heap->nodes[smallest], scheduler))
+			smallest = left;
+		if (right < heap->size && is_smaller(heap->nodes[right], heap->nodes[smallest], scheduler))
+			smallest = right;
+		if (smallest == i)
+			break;
+		temp = heap->nodes[i];
+		heap->nodes[i] = heap->nodes[smallest];
+		heap->nodes[smallest] = temp;
+		i++;
+	}
+	return (min);
 }
