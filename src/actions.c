@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 11:03:36 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 14:12:21 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 14:37:15 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,35 @@ static void	take_one_dongle(t_coder *coder, t_dongle *dongle) {
 }
 
 void	take_dongles(t_coder *coder) {
-	take_one_dongle(coder, coder->left_dongle);
-	// log has taken a dongle
-	take_one_dongle(coder, coder->right_dongle);
-	// log has taken a dongle
+	if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
+	{
+		take_one_dongle(coder, coder->left_dongle);
+		log_state(coder, "has taken a dongle");
+		take_one_dongle(coder, coder->right_dongle);
+		log_state(coder, "has taken a dongle");
+	}
+	else
+	{
+		take_one_dongle(coder, coder->right_dongle);
+		log_state(coder, "has taken a dongle");
+		take_one_dongle(coder, coder->left_dongle);
+		log_state(coder, "has taken a dongle");
+	}
+}
+
+void	release_dongles(t_coder *coder) {
+	if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
+	{
+		take_one_dongle(coder, coder->left_dongle);
+		log_state(coder, "has taken a dongle");
+		take_one_dongle(coder, coder->right_dongle);
+		log_state(coder, "has taken a dongle");
+	}
+	else
+	{
+		take_one_dongle(coder, coder->right_dongle);
+		log_state(coder, "has taken a dongle");
+		take_one_dongle(coder, coder->left_dongle);
+		log_state(coder, "has taken a dongle");
+	}
 }

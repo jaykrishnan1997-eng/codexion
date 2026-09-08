@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 11:00:01 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 14:37:00 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_dongle	*init_dongles(t_data *data) {
 
     while (d < data->num_coders)
     {
+        dongles[d].dongle_id = d;
 		pthread_mutex_init(&dongles[d].mutex, NULL);
     	pthread_cond_init(&dongles[d].cond, NULL);
 		dongles[d].in_use = 0;
