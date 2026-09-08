@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 09:55:56 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 11:00:01 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_dongle	*init_dongles(t_data *data) {
     int			d;
     // list of pointers with address to dongles
     t_dongle 	*dongles;
-	
+    
 	dongles = malloc(sizeof(t_dongle) * data->num_coders);
 	if (!dongles)
 		return (NULL);
@@ -89,6 +89,15 @@ t_dongle	*init_dongles(t_data *data) {
     	pthread_cond_init(&dongles[d].cond, NULL);
 		dongles[d].in_use = 0;
 		dongles[d].available_at = 0;
+        // intitalizing the request part per dongle
+        dongles[d].request_heap.nodes = malloc(sizeof(t_heap_node) * data->num_coders);
+        // THIS IS NOT ENOUGH INCASE SOME OTHER MEMORY WAS
+        // ALREADY ALLOCATED
+        if (!dongles[d].request_heap.nodes)
+            return (NULL);
+        dongles[d].request_heap.size = 0;
+        dongles[d].request_heap.capacity = data->num_coders;
+        
 		d++;
     }
     return (dongles);

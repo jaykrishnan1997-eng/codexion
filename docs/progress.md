@@ -119,3 +119,8 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
         2. https://gist.github.com/nyorain/468f4450b0b6585ac04100199485cde1
         3. https://www.youtube.com/watch?v=pAU21g-jBiE
         4. https://www.youtube.com/watch?v=0wPlzMU-k00
+
+## DAY 6 [Sept 8]
+
+    good reference for structures and all: https://github.com/Jamshidbek2000/philosophers_42
+    updating init_dongles() so each dongles request heap gets properly set up

@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 09:45:32 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 10:44:25 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_heap {
     int         capacity;
 } t_heap;
 
+// each dongle should have their own request
 typedef struct s_dongle {
     int             dongle_id;
     pthread_mutex_t	mutex;
