@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 10:44:25 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 12:10:57 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ typedef	struct	s_data {
     int             time_to_refractor;
     int	            required_compiles;
     int	            dongle_cooldown;
-
 	char	        *scheduler;
-	
     t_dongle        *dongles;
 	t_coder		    *coders;
-	
     long            start_time;
 	int			    simulation_over;
-    pthread_mutex_t log_mutex;
+    pthread_mutex_t log_mutex; // to protect log data: prints to stdout/stderr
     pthread_mutex_t sim_mutex; // to protect simulation_over
+    long            next_sequence;
+    pthread_mutex_t sequence_mutex; // protect next sequence, since many coders increment it concurrently
+
 } t_data;
 
 typedef struct  s_request {

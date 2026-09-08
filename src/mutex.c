@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 11:01:33 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/07 11:15:47 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/08 12:08:02 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,19 @@ int	init_mutexes(t_data *data) {
         return (-1);
     if (pthread_mutex_init(&data->sim_mutex, NULL) != 0)
         return (-1);
+    if (pthread_mutex_init(&data->sequence_mutex, NULL) != 0)
+        return (-1);
+    data->next_sequence
     return (0);
 }
 
 void	destroy_mutexes(t_data *data) {
 	pthread_mutex_destroy(&data->log_mutex);
 	pthread_mutex_destroy(&data->sim_mutex);
+	pthread_mutex_destroy(&data->sequence_mutex);
 }
+
+// log_mutex: protects the "only one thread to print to stdout/stderr at a time"
+// sim_mutex: protects the "simulation_over" flag
+// sequence_mutex: protects "next_sequence", since many coders increament it concurrently when making requests.
+// each dongle's own mutex protects dongle's in_use / available_at/heap state specifically
