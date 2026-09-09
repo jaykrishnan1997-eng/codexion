@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/08 09:32:55 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/09 13:34:14 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 int main(int argc, char **argv){
 
+	int			i;
     t_data		data;
 	t_dongle	*dongles;
 
@@ -39,7 +40,12 @@ int main(int argc, char **argv){
 	if (init_mutexes(&data) == -1)
 		return (-1);
 	data.start_time = get_time();
-	
+	i = 0;
+	while (i < data.num_coders)
+	{
+		data.coders[i].last_compile_start = data.start_time;
+		i++;
+	}
 	
     // create thread, sun simulation, cleanups etc
     return (0);

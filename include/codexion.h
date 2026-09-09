@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 21:00:00 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/09 13:42:14 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int     create_threads(t_data *data);
 void    wait_for_threads(t_data *data);
 
 /* routine */
-t_coder    *coder_routine(void *arg);
+void    *coder_routine(void *arg);
 
 /* actions */
 void    take_dongles(t_coder *coder);
