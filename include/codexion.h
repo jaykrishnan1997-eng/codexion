@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/09 13:42:14 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/10 14:54:49 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef	struct	s_data {
     pthread_mutex_t sim_mutex; // to protect simulation_over
     long            next_sequence;
     pthread_mutex_t sequence_mutex; // protect next sequence, since many coders increment it concurrently
-
+    pthread_t       monitor_thread;
 } t_data;
 
 typedef struct  s_request {

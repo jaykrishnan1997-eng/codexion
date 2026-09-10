@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 13:40:25 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/09 14:14:45 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/10 14:56:54 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,39 @@
 
 int     create_threads(t_data *data)
 {
-    n = data->num_coders
-    pthread_t th[n];
-    pthread_t mth;
-    
-    for (int i = 0; i < n; i++) {
-        if (pthread_create(&th[i], NULL, &, NULL) != 0) 
-            perror("Failed to create thread");
+	int	i;
+
+	i = 0; 
+
+    while (i < data->num_coders)
+	{
+        if (pthread_create(&data->coders[i].thread, NULL, coder_routine, &data->coders[i]) != 0) 
+        {
+			perror("Failed to create thread");
+			return (-1);
+		}
+		i++;
     }
-    if (pthread_create(&mth, NULL, &, NULL) != 0) 
-        perror("Failed to create thread");
+    if (pthread_create(&data->monitor_thread, NULL, monitor_routine, data) != 0)
+	{
+		perror("Failed to create monitor thread");
+		return (-1);
+	}
+	return (0);
 }
 
-void    wait_for_threads(t_data *data);
+void    wait_for_threads(t_data *data)
 {
+    int i;
+
+    i = 0;
+    while (i < data->num_coders)
+    {
+        if (pthread_join(data->coders[i].thread, NULL) != 0) 
+            perror("Failed to join thread");
+		i++;
+    }
+    if (pthread_join(data->monitor_thread, NULL) != 0) 
+        perror("Failed to join monitor thread");
 }
+
