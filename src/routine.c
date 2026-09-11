@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 10:18:29 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:38:15 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 12:41:56 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void    *coder_routine(void *arg) {
 		log_state(coder, "is debugging");
 		usleep(coder->data->time_to_debug * 1000);
 		
-		log_state(coder, "is refractoring");
+		log_state(coder, "is refactoring");
 		usleep(coder->data->time_to_refractor * 1000);
 	}
     return (NULL);
