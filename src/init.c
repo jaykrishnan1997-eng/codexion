@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 10:11:09 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 10:25:15 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int  is_valid_number(const char *str){
 int parser(int argc, char **argv, t_data *data)
 {
 
-    if (argc != 7)
+    if (argc != 9)
         return (-1);
     int i;
 
