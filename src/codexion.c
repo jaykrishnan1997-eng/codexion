@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/11 10:26:28 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 11:14:44 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int main(int argc, char **argv){
     {
 		return (-1);	
 	}
+	data.simulation_over = 0;
 	dongles = init_dongles(&data);
 	if (!dongles)
 		return (-1);

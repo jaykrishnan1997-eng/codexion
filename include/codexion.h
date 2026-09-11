@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 09:50:38 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 11:33:23 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ typedef struct s_dongle {
 } t_dongle;
 
 typedef	struct	s_coder {
-    int 	    coder_id;
-    int	        no_of_compiles;
-    char	    *current_state;
-	pthread_t	thread;
-    t_dongle	*left_dongle;
-	t_dongle    *right_dongle;
-	t_data	    *data;
-    long        last_compile_start;
+    int 	        coder_id;
+    int	            no_of_compiles;
+    char	        *current_state;
+	pthread_t	    thread;
+    p_thread_mutex  state_mutex;
+    t_dongle	    *left_dongle;
+	t_dongle        *right_dongle;
+	t_data	        *data;
+    long            last_compile_start;
 } t_coder;
 
 typedef	struct	s_data {
@@ -92,9 +93,10 @@ void    wait_for_threads(t_data *data);
 
 /* routine */
 void    *coder_routine(void *arg);
+int	is_simulation_over(t_data *data);
 
 /* actions */
-void    take_dongles(t_coder *coder);
+int    take_dongles(t_coder *coder);
 void    release_dongles(t_coder *coder);
 
 /* monitoring */
