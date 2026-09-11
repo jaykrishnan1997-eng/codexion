@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/10 20:26:47 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/11 08:58:33 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,7 @@ long	get_time(void) {
 
 void	log_state(t_coder *coder, char *message)
 {
-	printf("%d %d %s", get_time(), coder->coder_id, message);
+	pthread_mutex_lock(&coder->data->log_mutex);
+	printf("%ld %d %s\n", get_time() - coder->data->start_time, coder->coder_id + 1, message);
+	pthread_mutex_unlock(&coder->data->log_mutex);
 }

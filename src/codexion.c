@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/09 13:34:14 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 09:43:07 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <time.h>
-
 
 int main(int argc, char **argv){
 
@@ -26,7 +25,7 @@ int main(int argc, char **argv){
     if (argc != 9)
     {
 		printf("Correct usage is:\n");
-		printf("./codexion.c nc tb tc td tr ncr dc sch");
+		printf("./codexion.c nc tb tc td tr ncr dc sch\n");
 		return (-1);
 	}
     if (parser(argc, argv, &data) == -1)
@@ -46,7 +45,24 @@ int main(int argc, char **argv){
 		data.coders[i].last_compile_start = data.start_time;
 		i++;
 	}
-	
-    // create thread, sun simulation, cleanups etc
+	if (create_threads(&data) == -1)
+	{
+		cleanup(&data);
+		return (-1);
+	}
+	wait_for_threads(&data);
+	cleanup(&data);
     return (0);
 }
+
+    // argc check
+    // parser
+    // init_dongles
+    // init_coders
+    // init_mutexes
+    // set start_time
+    // seed last_compile_start for all coders
+    // create_threads
+    // wait_for_threads
+    // cleanup
+    // return
