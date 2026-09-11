@@ -1,2 +1,4 @@
+a.out
 codexion
-tests
+*.o
+*tsan

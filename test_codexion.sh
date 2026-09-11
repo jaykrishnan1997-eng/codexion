@@ -217,6 +217,7 @@ section "8. Torture test — repeated runs, watch for hangs/crashes/inconsistenc
 TORTURE_RUNS=30
 TORTURE_FAILS=0
 for i in $(seq 1 $TORTURE_RUNS); do
+    echo "."
     logfile="/tmp/codexion_torture_$i.log"
     timeout 15 "$BINARY" 3 800 200 100 100 3 50 fifo > "$logfile" 2>&1
     status=$?

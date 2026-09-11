@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:54:00 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 12:57:38 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,17 @@ int parser(int argc, char **argv, t_data *data)
             return (-1);
         }
 
-        if (atoi(argv[i]) <= 0) {
+        if (atoi(argv[i]) <= 0 && (i != 7)) {
 
             printf("Argument %d must be greater than zero\n", i);
             return (-1);
         }
+        if (atoi(argv[i]) < 0 && (i == 7)) {
+
+            printf("Argument %d must be greater than or equal to zero\n", i);
+            return (-1);
+        }
+        
         i++;
     }
     if (strcmp(argv[8], "fifo") != 0 && strcmp(argv[8], "edf") != 0) {
