@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/11 11:14:44 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 14:09:17 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     if (argc != 9)
     {
 		printf("Correct usage is:\n");
-		printf("./codexion.c nc tb tc td tr ncr dc sch\n");
+		printf("./codexion nc tb tc td tr ncr dc sch\n");
 		return (-1);
 	}
     if (parser(argc, argv, &data) == -1)

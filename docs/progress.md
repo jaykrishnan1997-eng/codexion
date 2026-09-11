@@ -124,3 +124,9 @@ This is the theory Codexion is built on (coders = philosophers, dongles = forks)
 
     good reference for structures and all: https://github.com/Jamshidbek2000/philosophers_42
     updating init_dongles() so each dongles request heap gets properly set up
+
+# currently: 
+    1. what if only one coder is present: my code fails
+    2. Code still runs after burnout. This is fatal error. 
+    3. all norminette error and number of line error if present
+    4.
