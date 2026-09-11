@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:33:23 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 11:53:24 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef	struct	s_coder {
     int	            no_of_compiles;
     char	        *current_state;
 	pthread_t	    thread;
-    p_thread_mutex  state_mutex;
+    pthread_mutex_t  state_mutex;
     t_dongle	    *left_dongle;
 	t_dongle        *right_dongle;
 	t_data	        *data;

@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:39:43 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 11:54:00 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	init_coders(t_data *data, t_dongle *dongles) {
 		data->coders[c].right_dongle = &dongles[(c + 1) % data->num_coders];
 		data->coders[c].data = data;
 		data->coders[c].last_compile_start = 0;
-        pthread_mutex_init(&data->coders[c].state_mutex);
+        pthread_mutex_init(&data->coders[c].state_mutex, NULL);
 		c++;
     }
     return (0);
