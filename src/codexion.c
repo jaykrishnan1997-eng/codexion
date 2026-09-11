@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/11 09:43:07 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 10:07:06 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int main(int argc, char **argv){
 		return (-1);
 	}
     if (parser(argc, argv, &data) == -1)
-        return (-1);
+    {
+		return (-1);	
+	}
 	dongles = init_dongles(&data);
 	if (!dongles)
 		return (-1);

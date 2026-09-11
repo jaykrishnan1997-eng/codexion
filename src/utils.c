@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 08:58:33 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 10:15:32 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 bool    checkin(char c, char *str) {
 

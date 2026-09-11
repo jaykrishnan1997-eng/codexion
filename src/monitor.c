@@ -6,11 +6,12 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 11:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/09 13:32:23 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 10:13:10 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+#include <unistd.h>
 
 void    *monitor_routine(void *arg) {
     t_data  *data;
@@ -53,7 +54,7 @@ void    *monitor_routine(void *arg) {
             pthread_mutex_unlock(&data->sim_mutex);
             return (NULL);
         }
-        if (is_simulation_over(data))
+        if (data->simulation_over == 1)
             return (NULL);
         usleep(3000);
     }

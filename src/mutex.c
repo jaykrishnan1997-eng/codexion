@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 11:01:33 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/08 12:08:02 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/11 10:14:38 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	init_mutexes(t_data *data) {
         return (-1);
     if (pthread_mutex_init(&data->sequence_mutex, NULL) != 0)
         return (-1);
-    data->next_sequence
+    data->next_sequence = 0;
     return (0);
 }
 

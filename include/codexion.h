@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/10 14:54:49 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/11 09:50:38 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ typedef struct  s_request {
 
 
 // /* heap */
-void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler);
+void	    heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler);
 t_heap_node	heap_extract_min(t_heap *heap, char *scheduler);
 
 /* initialization */
-int     init_data(t_data *data);
-int     init_coders(t_data *data, t_dongle *dongles);
+int     parser(int argc, char **argv, t_data *data);
 t_dongle *init_dongles(t_data *data);
+int     init_coders(t_data *data, t_dongle *dongles);
 
 /* threads */
 int     create_threads(t_data *data);
@@ -95,7 +95,6 @@ void    *coder_routine(void *arg);
 
 /* actions */
 void    take_dongles(t_coder *coder);
-void    compile(t_coder *coder);
 void    release_dongles(t_coder *coder);
 
 /* monitoring */
@@ -108,6 +107,8 @@ void    destroy_mutexes(t_data *data);
 /* utilities */
 long    get_time(void);
 void    precise_sleep(int milliseconds);
+void	log_state(t_coder *coder, char *message);
+
 
 /* cleanup */
 void    cleanup(t_data *data);
