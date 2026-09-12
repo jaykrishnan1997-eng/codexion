@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 11:03:36 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:50:55 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 09:42:31 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,18 @@ static int	take_one_dongle(t_coder *coder, t_dongle *dongle) {
 
 int	take_dongles(t_coder *coder) 
 {
+	if (is_simulation_over(coder->data))
+		return (-1);
+	if (coder->left_dongle == coder->right_dongle)
+	{
+		if (take_one_dongle(coder, coder->left_dongle) == -1)
+			return (-1);
+		log_state(coder, "has taken a dongle");
+		log_state(coder, "has taken a dongle");
+		return (0);
+	}
 	if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
 	{
-		
 		if (take_one_dongle(coder, coder->left_dongle) == -1)
 			return (-1);
 		log_state(coder, "has taken a dongle");
@@ -101,6 +110,11 @@ static void	release_one_dongles(t_coder *coder, t_dongle *dongle) {
 
 void release_dongles(t_coder *coder)
 {
+	if (coder->left_dongle == coder->right_dongle)
+	{
+		release_one_dongles(coder, coder->left_dongle);
+		return;
+	}
 	release_one_dongles(coder, coder->left_dongle);
 	release_one_dongles(coder, coder->right_dongle);
 }

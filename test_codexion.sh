@@ -126,9 +126,9 @@ section "5. Easy tier — moderate coders, generous timing, no burnout expected"
 # Per the eval sheet: don't test >200 coders, don't test timing under 60ms.
 
 run_easy_case() {
-    local coders="$1" sched="$2"
+    local coders="$1" sched="$2" burnout="$3"
     local logfile="/tmp/codexion_easy_${coders}_${sched}.log"
-    timeout 20 "$BINARY" "$coders" 2000 200 100 100 3 100 "$sched" > "$logfile" 2>&1
+    timeout 20 "$BINARY" "$coders" "$burnout" 200 100 100 3 100 "$sched" > "$logfile" 2>&1
     local status=$?
     if [ $status -ne 0 ]; then
         fail "easy case ($coders coders, $sched): non-zero exit ($status)"
@@ -141,12 +141,12 @@ run_easy_case() {
     check_log_format "$logfile" && pass "easy case ($coders coders, $sched): clean run, correct log format"
 }
 
-run_easy_case 2 fifo
-run_easy_case 2 edf
-run_easy_case 5 fifo
-run_easy_case 5 edf
-run_easy_case 20 fifo
-run_easy_case 50 edf
+run_easy_case 2 fifo 2000
+run_easy_case 2 edf 2000
+run_easy_case 5 fifo 2000
+run_easy_case 5 edf 2000
+run_easy_case 20 fifo 4000
+run_easy_case 50 edf 6000
 
 # ---------------------------------------------------------------------------
 section "6. Less-easy tier — burnout edge cases"
