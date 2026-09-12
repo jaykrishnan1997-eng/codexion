@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/12 11:46:59 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 12:07:09 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@ int main(int argc, char **argv){
     {
 		printf("Correct usage is:\n");
 		printf("./codexion nc tb tc td tr ncr dc sch\n");
+		printf("eg: ./codexion 6 3000 200 100 100 2 50 edf\n");
 		return (-1);
 	}
     if (parser(argc, argv, &data) == -1)
-    {
-		return (-1);	
-	}
+		return (-1);
 	data.simulation_over = 0;
 	dongles = init_dongles(&data);
 	if (!dongles)
