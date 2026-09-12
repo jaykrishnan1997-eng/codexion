@@ -547,7 +547,6 @@ coders/
     ├── actions.c
     ├── monitor.c
     ├── mutex.c
-    ├── cleanup.c
     ├── heap.c
     └── utils.c
 
@@ -607,13 +606,10 @@ Implements the priority queue used by the dongle arbitration mechanism.
 
 Initializes the shared mutexes.
 
-### `cleanup.c`
-
-Destroys synchronization objects and frees dynamically allocated memory.
-
 ### `utils.c`
 
 Contains utility functionality such as millisecond timestamps, sleeping and synchronized state logging.
+Clean-up: Destroys synchronization objects and frees dynamically allocated memory.
 
 ---
 

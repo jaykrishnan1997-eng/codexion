@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/12 10:54:46 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:34:38 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 # define CODEXION_H
 
 # include <pthread.h>
+# include <time.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
+# include <unistd.h>
+# include <errno.h>
+# include <sys/time.h>
+# include <stdbool.h>
 
 typedef struct  s_data t_data;
 typedef struct  s_coder t_coder;

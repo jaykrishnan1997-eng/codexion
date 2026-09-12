@@ -6,12 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 10:18:29 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 12:41:56 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:37:00 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <unistd.h>
 
 int	is_simulation_over(t_data *data) {
     int simulation_status;

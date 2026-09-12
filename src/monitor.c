@@ -6,12 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 11:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:49:10 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:36:56 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <unistd.h>
 
 void    *monitor_routine(void *arg) {
     t_data  *data;

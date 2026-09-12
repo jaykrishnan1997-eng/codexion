@@ -6,15 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 10:15:32 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:47:36 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <sys/time.h>
-#include <string.h>
-#include <stdbool.h>
-#include <stdio.h>
 
 bool    checkin(char c, char *str) {
 
@@ -33,12 +29,7 @@ bool    checkin(char c, char *str) {
 }
 
 long	get_time(void) {
-	// struct timeval {
-	// 	time_t		tv_sec;	// second
-	// 	suseconds_t	tv_usec;// microseconds
-	// }; pre-defined in sys/time.h
-	// int gettimeofday(struct timeval *tv, struct timezone *tz);
-	
+		
 	long time_in_ms;
 	struct timeval	tv;
 	
@@ -52,4 +43,24 @@ void	log_state(t_coder *coder, char *message)
 	pthread_mutex_lock(&coder->data->log_mutex);
 	printf("%ld %d %s\n", get_time() - coder->data->start_time, coder->coder_id + 1, message);
 	pthread_mutex_unlock(&coder->data->log_mutex);
+}
+
+void    cleanup(t_data *data)
+{
+    int i;
+
+    i = 0;
+    while (i < data->num_coders)
+    {
+        pthread_mutex_destroy(&data->dongles[i].mutex);
+        pthread_cond_destroy(&data->dongles[i].cond);
+        free(data->dongles[i].request_heap.nodes);
+        pthread_mutex_destroy(&data->coders[i].state_mutex);
+        i++;    
+    }
+    free(data->dongles);
+    free(data->coders);
+	pthread_mutex_destroy(&data->log_mutex);
+	pthread_mutex_destroy(&data->sim_mutex);
+	pthread_mutex_destroy(&data->sequence_mutex);
 }

@@ -6,14 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 12:57:38 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:49:18 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 
 static int  is_valid_number(const char *str){
     int i;
@@ -38,8 +35,6 @@ int parser(int argc, char **argv, t_data *data)
     int i;
 
     i = 1;
-    // check data arguments if invalid (not positive integers)
-    // 8th argument is a char*
     while (i <= 7) {
         
         if (!is_valid_number(argv[i])) {
@@ -134,5 +129,3 @@ int	init_coders(t_data *data, t_dongle *dongles) {
     }
     return (0);
 }
-
-    // Call both of these from main() after parser() succeed

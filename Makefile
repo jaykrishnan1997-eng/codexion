@@ -6,7 +6,7 @@
 #    By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/09/11 12:22:45 by jkrishna          #+#    #+#              #
-#    Updated: 2026/09/11 12:35:11 by jkrishna         ###   ########.fr        #
+#    Updated: 2026/09/12 11:47:45 by jkrishna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRC 		= src/codexion.c \
 			  src/actions.c \
 			  src/monitor.c \
 			  src/mutex.c \
-			  src/cleanup.c \
 			  src/heap.c \
 			  src/utils.c
 

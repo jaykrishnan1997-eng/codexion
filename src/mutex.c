@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 11:01:33 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 10:14:38 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:47:26 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,3 @@ void	destroy_mutexes(t_data *data) {
 	pthread_mutex_destroy(&data->sim_mutex);
 	pthread_mutex_destroy(&data->sequence_mutex);
 }
-
-// log_mutex: protects the "only one thread to print to stdout/stderr at a time"
-// sim_mutex: protects the "simulation_over" flag
-// sequence_mutex: protects "next_sequence", since many coders increament it concurrently when making requests.
-// each dongle's own mutex protects dongle's in_use / available_at/heap state specifically

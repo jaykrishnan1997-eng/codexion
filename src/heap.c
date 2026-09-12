@@ -6,12 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 13:18:46 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/12 10:32:14 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:36:43 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <string.h>
 
 static int is_smaller(t_heap_node a, t_heap_node b, char *scheduler)
 {

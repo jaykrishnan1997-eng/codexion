@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 13:40:25 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/10 14:56:54 by jay-k            ###   ########.fr       */
+/*   Updated: 2026/09/12 11:37:05 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <errno.h>
 
 int     create_threads(t_data *data)
 {

@@ -6,15 +6,11 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/11 14:09:17 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 11:46:59 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <time.h>
 
 int main(int argc, char **argv){
 
@@ -57,15 +53,3 @@ int main(int argc, char **argv){
 	cleanup(&data);
     return (0);
 }
-
-    // argc check
-    // parser
-    // init_dongles
-    // init_coders
-    // init_mutexes
-    // set start_time
-    // seed last_compile_start for all coders
-    // create_threads
-    // wait_for_threads
-    // cleanup
-    // return
