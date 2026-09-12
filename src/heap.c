@@ -6,19 +6,28 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/07 13:18:46 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 10:09:42 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 10:27:54 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 #include <string.h>
 
+// static int is_smaller(t_heap_node a, t_heap_node b, char *scheduler)
+// {
+// 	if (strcmp(scheduler, "fifo") == 0)
+// 		return (a.sequence < b.sequence);
+// 	else
+// 		return (a.deadline < b.deadline);
+// }
+
 static int is_smaller(t_heap_node a, t_heap_node b, char *scheduler)
 {
 	if (strcmp(scheduler, "fifo") == 0)
 		return (a.sequence < b.sequence);
-	else
+	if (a.deadline != b.deadline)
 		return (a.deadline < b.deadline);
+	return (a.coder->coder_id > b.coder->coder_id );
 }
 
 void	heap_insert(t_heap *heap, t_heap_node new_node, char *scheduler) {
@@ -71,7 +80,7 @@ t_heap_node	heap_extract_min(t_heap *heap, char *scheduler) {
 		temp = heap->nodes[i];
 		heap->nodes[i] = heap->nodes[smallest];
 		heap->nodes[smallest] = temp;
-		i++;
+		i = smallest;
 	}
 	return (min);
 }
