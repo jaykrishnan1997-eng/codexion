@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/11 11:53:24 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 10:54:46 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_heap {
     int         capacity;
 } t_heap;
 
-// each dongle should have their own request
 typedef struct s_dongle {
     int             dongle_id;
     pthread_mutex_t	mutex;
@@ -110,7 +109,6 @@ void    destroy_mutexes(t_data *data);
 long    get_time(void);
 void    precise_sleep(int milliseconds);
 void	log_state(t_coder *coder, char *message);
-
 
 /* cleanup */
 void    cleanup(t_data *data);
