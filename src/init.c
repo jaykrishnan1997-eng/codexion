@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/12 11:49:18 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/12 12:47:42 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ static int  is_valid_number(const char *str){
     i = 0;
     if (str[i] == '\0')
         return (0);
-    
-    while (str[i]) {
+    if (str[i] == '+')
+        i++;
+    if (str[i] == '\0')
+        return (0);
+    while (str[i]) 
+    {
         if (str[i] < '0' || str[i] > '9')
             return (0);
         i++;
