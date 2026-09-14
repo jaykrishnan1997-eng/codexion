@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 12:22:50 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:27:50 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	interruptible_sleep(t_coder *coder, int time)
 {
 	long	end;
 	long	remaining;
-	int		chunk_ms;
+	int		chunk;
 	int		status;
 
 	status = 0;
