@@ -6,7 +6,7 @@
 #    By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/09/11 12:22:45 by jkrishna          #+#    #+#              #
-#    Updated: 2026/09/12 11:47:45 by jkrishna         ###   ########.fr        #
+#    Updated: 2026/09/14 11:25:49 by jkrishna         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRC 		= src/codexion.c \
 			  src/init.c \
 			  src/threads.c \
 			  src/routine.c \
-			  src/actions.c \
+			  src/release_dongle.c \
+			  src/take_dongles.c \
 			  src/monitor.c \
 			  src/mutex.c \
 			  src/heap.c \

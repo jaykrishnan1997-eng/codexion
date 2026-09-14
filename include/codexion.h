@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 11:21:04 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 11:24:37 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct s_data
 	int				required_compiles;
 	int				dongle_cooldown;
 	char			*scheduler;
-	t_dongle		dongles;
-	t_code			*coders;
+	t_dongle		*dongles;
+	t_coder			*coders;
 	long			start_time;
 	int				simulation_over;
 	pthread_mutex_t	log_mutex; // to protect log data
