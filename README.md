@@ -512,4 +512,3 @@ AI-generated material was treated as something to review and test rather than as
 # Current Status / Open Items
 
 - The single-coder path is exercised by the test scripts but is called out here as an area that deserves extra scrutiny during peer evaluation, since it collapses the usual two-dongle logic into one.
-- Leak checking (e.g. `valgrind --leak-check=full`) hasn't been run in every environment this project has been built in and is worth re-confirming on the evaluation machine before defense.
