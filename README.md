@@ -4,9 +4,9 @@
 
 ## Description
 
-Codexion is a concurrency and synchronization project written in C as part of the 42 curriculum.
+Codexion is a concurrency and synchronization project written in C as part of the 42 curriculum. It is a themed variant of the classic Dining Philosophers problem.
 
-The project simulates a group of coders working around a shared quantum compiler. Each coder is represented by a POSIX thread and must repeatedly go through the following cycle:
+The simulation models a group of coders working around a shared quantum compiler. Each coder is a POSIX thread that repeatedly cycles through:
 
 ```text
         ┌─────────────┐
@@ -29,31 +29,30 @@ The project simulates a group of coders working around a shared quantum compiler
         two dongles again
 ```
 
-The difficulty is that the dongles are shared resources. A coder can compile only while holding both required dongles. Multiple coders may request the same dongle at the same time, so access must be synchronized and granted according to the selected scheduling policy.
+The dongles are shared resources: a coder can compile only while holding both of its two required dongles. Multiple coders may request the same dongle at the same time, so access is synchronized and granted according to a selectable scheduling policy.
 
 The program supports two arbitration policies:
 
-- **FIFO** — First In, First Out. Requests are served according to their arrival sequence.
-- **EDF** — Earliest Deadline First. Requests are ordered according to the coder's burnout deadline:
+- **FIFO** — First In, First Out. A dongle serves whichever pending request arrived first.
+- **EDF** — Earliest Deadline First. A dongle serves whichever pending coder has the closest burnout deadline:
 
 ```text
 deadline = last_compile_start + time_to_burnout
 ```
 
-The project therefore combines:
+The project combines:
 
-- POSIX threads with `pthread_create()` and `pthread_join()`
-- mutexes
-- condition variables
-- priority queues implemented as binary heaps
-- FIFO and EDF scheduling
-- shared-resource management
-- burnout monitoring
-- precise millisecond timing
-- synchronized logging
+- POSIX threads (`pthread_create()` / `pthread_join()`)
+- mutexes and condition variables
+- a hand-written binary min-heap used as a priority queue
+- FIFO and EDF scheduling on top of the same heap
+- shared-resource acquisition with cooldown
+- an independent monitor thread for burnout detection
+- millisecond-precision timing
+- mutex-protected logging
 - dynamic memory management and cleanup
 
-There are no global variables.
+There are no global variables — all shared state lives in `t_data` and is passed explicitly.
 
 ---
 
@@ -65,7 +64,7 @@ The executable is named:
 codexion
 ```
 
-It takes exactly eight mandatory arguments:
+It takes exactly eight mandatory arguments (nine `argv` entries counting the program name):
 
 ```text
 ./codexion number_of_coders time_to_burnout time_to_compile \
@@ -77,18 +76,18 @@ It takes exactly eight mandatory arguments:
 
 | Argument | Description |
 |---|---|
-| `number_of_coders` | Number of coder threads and, for multiple coders, number of dongles |
+| `number_of_coders` | Number of coder threads and, for more than one coder, number of dongles |
 | `time_to_burnout` | Maximum time a coder may go without starting another compilation |
 | `time_to_compile` | Time spent compiling while holding both dongles |
 | `time_to_debug` | Time spent debugging after compilation |
 | `time_to_refactor` | Time spent refactoring after debugging |
 | `number_of_compiles_required` | Number of successful compilations required from every coder before normal termination |
-| `dongle_cooldown` | Time a released dongle remains unavailable |
+| `dongle_cooldown` | Time a released dongle remains unavailable (may be `0`) |
 | `scheduler` | `fifo` or `edf` |
 
 All times are expressed in milliseconds.
 
-Invalid arguments such as negative numbers, non-integers, missing arguments, extra arguments, or an invalid scheduler must be rejected.
+Invalid arguments are rejected: a missing/extra argument, a non-numeric value, a negative or zero value where a positive one is required, and any scheduler other than exactly `fifo` or `edf`.
 
 ---
 
@@ -96,23 +95,17 @@ Invalid arguments such as negative numbers, non-integers, missing arguments, ext
 
 ### Compilation
 
-The project can be compiled with:
-
 ```bash
 make
 ```
 
-The Makefile uses:
+The Makefile compiles with:
 
 ```text
-cc
--Wall
--Wextra
--Werror
--pthread
+cc -Wall -Wextra -Werror -pthread
 ```
 
-Other available Makefile targets are:
+Other targets:
 
 ```bash
 make all
@@ -123,7 +116,7 @@ make re
 
 ### Execution
 
-Example:
+FIFO example:
 
 ```bash
 ./codexion 3 2000 200 100 100 3 50 fifo
@@ -135,17 +128,7 @@ EDF example:
 ./codexion 3 2000 200 100 100 3 50 edf
 ```
 
-The scheduler must be exactly:
-
-```text
-fifo
-```
-
-or:
-
-```text
-edf
-```
+The scheduler argument must be exactly `fifo` or `edf`.
 
 ---
 
@@ -153,11 +136,9 @@ edf
 
 ### Coders
 
-Every coder is represented by a `pthread_t`.
+Every coder is a `pthread_t`. Internally coder indices run `0 .. number_of_coders - 1`, but they are logged as `1 .. number_of_coders` so the output matches the subject's numbering.
 
-Coder IDs start at `1` and continue to `number_of_coders`.
-
-The coders are arranged in a circle:
+The coders sit in a circle:
 
 ```text
 1 -- 2 -- 3 -- ... -- N
@@ -165,38 +146,24 @@ The coders are arranged in a circle:
 +-------------------+
 ```
 
-Coder `1` is next to coder `N`.
+Coder `1` is adjacent to coder `N`. Each coder has a left and a right dongle, and each dongle (except in the single-coder case) is shared by exactly two adjacent coders.
 
-Each coder has a left and right dongle. With several coders, each dongle is shared by the two adjacent coders.
-
-The single-coder case is special: when there is only one coder, there is only **one dongle**, and the coder uses that same dongle for both sides.
+**Single-coder case:** when `number_of_coders` is `1`, there is only one dongle, and the coder's left and right pointers both refer to it. Acquiring and releasing it happens once, but two `has taken a dongle` lines are still logged, matching the two-dongle protocol used for every other coder count.
 
 ### Compilation
 
-A coder must acquire both required dongles before it can start compiling.
+A coder must acquire both of its dongles before compiling. The log therefore contains two `has taken a dongle` lines immediately before `is compiling`.
 
-The log therefore contains two:
-
-```text
-has taken a dongle
-```
-
-messages immediately before:
-
-```text
-is compiling
-```
-
-After compilation, both dongles are released and enter their cooldown period.
+After compilation, both dongles are released (entering cooldown) before the coder debugs and refactors.
 
 ### Debugging and refactoring
 
-After compiling, the coder:
+After compiling, a coder:
 
 1. releases both dongles;
 2. debugs;
 3. refactors;
-4. attempts to acquire the required dongles again.
+4. attempts to acquire its dongles again.
 
 ---
 
@@ -204,33 +171,27 @@ After compiling, the coder:
 
 ### FIFO
 
-With FIFO scheduling, a dongle serves the request that arrived first.
-
-Each request receives a monotonically increasing sequence number. The sequence number is protected by a mutex because multiple coder threads may create requests concurrently.
-
-The request heap is ordered by this sequence number when the scheduler is `fifo`.
+Each dongle request receives a monotonically increasing sequence number, handed out under a dedicated mutex so concurrent requests can't collide. Under FIFO, the dongle's request heap is ordered by that sequence number, so the request that arrived first is served first.
 
 ### EDF
 
-With EDF scheduling, the request with the earliest burnout deadline has priority.
-
-The deadline is:
+Under EDF, the request heap is ordered by burnout deadline instead:
 
 ```text
-last_compile_start + time_to_burnout
+deadline = last_compile_start + time_to_burnout
 ```
 
-The request heap is ordered by this deadline when the scheduler is `edf`.
+The coder closest to burning out is served first, regardless of arrival order.
 
-The heap implementation is shared by both scheduling modes; only the comparison rule changes.
+The heap implementation itself is identical for both modes — only the comparison rule (`is_smaller`) changes based on the `scheduler` string.
 
 ---
 
 ## Priority Queue / Heap
 
-The project implements its own binary min-heap because a standard C priority queue is not available.
+Codexion implements its own array-backed binary min-heap, since C has no built-in priority queue.
 
-Each heap node contains:
+Each heap node stores:
 
 ```text
 coder
@@ -238,221 +199,117 @@ sequence
 deadline
 ```
 
-The heap supports:
+Supported operations:
 
-- insertion
-- extraction of the minimum-priority request
+- `heap_insert` — sift-up insertion
+- `heap_extract_min` — removes the root, moves the last element to the root, and sifts it down
 
-For FIFO, the sequence number determines priority.
-
-For EDF, the burnout deadline determines priority.
-
-Each dongle owns its own request heap. The dongle mutex protects access to the dongle state and its request heap.
+Each dongle owns its own heap, and the dongle's mutex protects both the dongle's state and its heap.
 
 ---
 
 ## Dongle Cooldown
 
-A released dongle cannot immediately be reused.
-
-When a coder releases a dongle:
+A released dongle isn't immediately reusable. On release:
 
 ```text
 available_at = current_time + dongle_cooldown
 ```
 
-The dongle remains unavailable until that timestamp has been reached.
-
-A request therefore has to satisfy all of the relevant conditions before it can acquire a dongle:
+A coder can only acquire a dongle once **all** of the following hold:
 
 - the dongle is not currently in use;
-- its cooldown has expired;
-- the requesting coder is the highest-priority request according to FIFO or EDF.
+- its cooldown has expired (`current_time >= available_at`);
+- the coder is at the front of that dongle's request heap (highest priority under FIFO or EDF).
 
-A condition variable is used to wake waiting coders when the dongle state changes.
+Waiting coders block on the dongle's condition variable and are woken on release; the wait uses `pthread_cond_timedwait` (with a short periodic re-check) rather than a plain `pthread_cond_wait`, so a coder also re-evaluates simulation-termination and cooldown state even without an explicit signal.
 
 ---
 
 # Blocking Cases Handled
 
-Concurrency is the central difficulty of Codexion. The implementation is designed around the following blocking cases.
-
 ## Deadlock
 
-A classic deadlock risk exists if coders acquire one dongle and then wait indefinitely for the second one.
-
-For example:
+The classic circular-wait risk — two adjacent coders each holding one dongle and waiting on the other — is avoided by imposing a fixed acquisition order:
 
 ```text
-Coder 1 holds dongle A
-Coder 2 holds dongle B
-
-Coder 1 waits for B
-Coder 2 waits for A
+acquire the lower-ID dongle first
+acquire the higher-ID dongle second
 ```
 
-This creates a circular wait.
-
-The implementation prevents this particular acquisition-order problem by imposing an ordering on the two dongles:
-
-```text
-acquire lower dongle ID first
-acquire higher dongle ID second
-```
-
-The single-coder case is handled separately because both logical sides refer to the same physical dongle.
-
-This approach is based on breaking Coffman's **circular-wait** condition.
-
-The four classic Coffman conditions are:
+Because every coder compares its own left/right dongle IDs before acquiring, no cycle of "holds A, waits for B" / "holds B, waits for A" can form. This targets Coffman's **circular-wait** condition specifically; the other three classic conditions —
 
 1. Mutual exclusion
 2. Hold and wait
 3. No preemption
 4. Circular wait
 
-Mutual exclusion is unavoidable because a dongle can only be used by one coder at a time. The acquisition ordering is used to prevent a circular wait from forming.
+— are either unavoidable (mutual exclusion: a dongle can only be used by one coder) or not addressed by this ordering trick and aren't separately broken here.
+
+The single-coder case is handled as its own branch, since both logical dongle sides map to the same physical dongle.
 
 ## Resource duplication
 
-Every dongle has its own:
-
-```c
-pthread_mutex_t mutex;
-```
-
-The mutex protects its shared state, including:
-
-- whether it is currently in use;
-- its cooldown timestamp;
-- its request heap.
-
-A coder cannot simultaneously be granted the same dongle as another coder.
+Each dongle has its own `pthread_mutex_t` guarding its `in_use` flag, `available_at` timestamp, and request heap, so two coders can never simultaneously believe they hold the same dongle.
 
 ## Starvation
 
-FIFO provides arrival-order arbitration.
-
-EDF prioritizes the coder whose burnout deadline is closest:
-
-```text
-last_compile_start + time_to_burnout
-```
-
-The scheduler therefore does not simply favour the coder that happened to arrive first in EDF mode.
-
-The project also stresses EDF under contention to check that coders do not remain indefinitely waiting while feasible progress is possible.
+FIFO guarantees arrival-order service. EDF instead prioritizes the coder closest to burnout, so a coder that keeps losing arbitration under FIFO would instead be prioritized as its deadline approaches under EDF.
 
 ## Cooldown blocking
 
-A dongle that has just been released is deliberately kept unavailable until:
-
-```text
-available_at
-```
-
-is reached.
-
-A waiting coder cannot bypass this condition merely because it has the highest-priority request.
+A dongle that was just released stays unavailable until `available_at` is reached, even for the coder with the highest-priority pending request — cooldown is checked independently of scheduling priority in `wait_for_dongle`.
 
 ## Logging races
 
-Multiple coder threads can attempt to print at the same time.
-
-All state-change output is therefore protected by:
-
-```c
-pthread_mutex_t log_mutex;
-```
-
-This guarantees that two log messages cannot be mixed together on the same output line.
-
-The expected format is:
+All output goes through `log_state`, which serializes printing under `log_mutex`, so two coders' log lines can never interleave on the same line. Format:
 
 ```text
 timestamp coder_id message
 ```
 
-For example:
+Example:
 
 ```text
 0 1 has taken a dongle
-1 1 has taken a dongle
-1 1 is compiling
+0 1 has taken a dongle
+0 1 is compiling
 201 1 is debugging
 401 1 is refactoring
 ```
 
 ## Shared simulation state
 
-The simulation termination flag is shared between the coder threads and the monitor thread.
-
-It is protected by:
-
-```c
-pthread_mutex_t sim_mutex;
-```
-
-The sequence counter used when creating scheduling requests is protected by:
-
-```c
-pthread_mutex_t sequence_mutex;
-```
-
-Each coder also has a state mutex protecting coder-specific shared state such as its compilation count and compilation timestamp.
+- `simulation_over` is guarded by `sim_mutex` and checked by every coder thread and the monitor thread.
+- The sequence counter used for FIFO ordering is guarded by `sequence_mutex`.
+- Each coder's own mutable state (`no_of_compiles`, `last_compile_start`) is guarded by that coder's own `state_mutex`.
 
 ---
 
 # Burnout Detection
 
-Burnout is one of the most important parts of the project.
+A coder burns out if it hasn't started a new compilation within `time_to_burnout` ms of either the simulation start or its previous compilation start.
 
-A coder burns out when it has not started a new compilation within:
-
-```text
-time_to_burnout
-```
-
-milliseconds from either:
-
-- the beginning of the simulation for the first compilation; or
-- the beginning of its previous compilation.
-
-The monitor thread tracks the coder's latest compilation start time and checks:
+A separate **monitor thread** — not the coder threads themselves — polls every 3 ms and checks, for each coder:
 
 ```text
 current_time - last_compile_start >= time_to_burnout
 ```
 
-The burnout event must be logged within **10 ms of the actual burnout time**, as required by the subject.
+The monitor is deliberately independent of the coder routines: a coder can be blocked waiting on a dongle and therefore isn't in a position to reliably watch its own deadline.
 
-The monitor is a separate thread rather than relying on the coder thread to detect its own burnout. This is important because a coder may be blocked waiting for shared dongles and therefore cannot reliably monitor its own deadline.
+### Termination conditions
 
-### Burnout and simulation termination
+The monitor stops the simulation (sets `simulation_over`) as soon as either is true:
 
-The subject defines two possible termination conditions:
+1. **Burnout** — any coder has missed its deadline.
+2. **Successful completion** — every coder has reached `number_of_compiles_required` compilations.
 
-1. **Burnout:** if a coder misses its compilation deadline, the monitor detects the burnout and the simulation must stop.
-2. **Successful completion:** if every coder has completed at least `number_of_compiles_required` compilations, the simulation stops normally.
+### Prompt shutdown mid-cycle
 
-Burnout therefore has priority over normal continued simulation. Once burnout is detected, the shared simulation-stop state must cause the coder threads to leave their routines and the main thread must wait for them before cleanup.
+Each phase (compile, debug, refactor) sleeps via `interruptible_sleep`, which breaks the requested duration into small chunks and re-checks `simulation_over` between chunks instead of sleeping through the whole phase in one call. A coder that is mid-compile, mid-debug, or mid-refactor when the monitor sets `simulation_over` — whether from a burnout or from every coder reaching its required compile count — stops within a couple of milliseconds rather than finishing the rest of its current cycle. If it was interrupted mid-compile, it releases its dongles before exiting rather than leaving them marked in use.
 
-### Special burnout edge case
-
-A particularly important test case is a very small `time_to_burnout`, especially when it is close to or smaller than the time required to progress through the simulation.
-
-This is useful for exposing:
-
-- late burnout detection;
-- coders continuing after the simulation should have stopped;
-- threads remaining blocked on a dongle;
-- incorrect `last_compile_start` updates;
-- races between the monitor and coder threads;
-- cleanup occurring while worker threads are still active.
-
-This case is treated separately from ordinary functional testing because a program can appear correct with generous timings while still having an incorrect shutdown path.
-
-**Current development status:** the implementation is still being hardened around the burnout/shutdown edge case and the single-coder case. These are known focus areas before final submission. The README documents the required behavior rather than claiming that an unfinished edge case has already been solved.
+This was verified directly: with a tight `time_to_burnout`, the last log line printed by any coder is now the `burned out` line itself, across repeated runs and coder counts up to 200.
 
 ---
 
@@ -460,78 +317,30 @@ This case is treated separately from ordinary functional testing because a progr
 
 ## `pthread_mutex_t`
 
-The implementation uses several mutexes with separate responsibilities.
-
-### Dongle mutex
-
-Each dongle has its own mutex.
-
-It protects:
-
-```text
-in_use
-available_at
-request_heap
-```
-
-Only the thread holding the dongle mutex may modify or inspect these shared values as part of an acquisition/release operation.
-
-### Log mutex
-
-The log mutex serializes output:
-
-```text
-pthread_mutex_lock(&log_mutex);
-printf(...);
-pthread_mutex_unlock(&log_mutex);
-```
-
-This prevents interleaved messages from multiple coder threads.
-
-### Simulation mutex
-
-The simulation mutex protects:
-
-```text
-simulation_over
-```
-
-Coder threads can safely check the flag while the monitor thread can safely update it.
-
-### Sequence mutex
-
-The sequence mutex protects the request sequence counter.
-
-Without it, two coders could potentially read the same sequence number before either increments it, breaking FIFO ordering.
+| Mutex | Scope | Protects |
+|---|---|---|
+| Dongle mutex (per dongle) | `t_dongle` | `in_use`, `available_at`, `request_heap` |
+| `log_mutex` | `t_data` | Interleaving of `printf` calls |
+| `sim_mutex` | `t_data` | `simulation_over` |
+| `sequence_mutex` | `t_data` | `next_sequence` (FIFO ordering) |
+| State mutex (per coder) | `t_coder` | `no_of_compiles`, `last_compile_start` |
 
 ## `pthread_cond_t`
 
-Each dongle has a condition variable.
-
-A coder that cannot currently acquire a dongle waits on the dongle's condition variable rather than continuously performing work.
-
-The condition is rechecked after waking because waking up does not itself guarantee that the requested dongle can be granted.
-
-The implementation also uses a timed wait so that a waiting coder can periodically reconsider its conditions, including simulation termination and cooldown.
+Each dongle has its own condition variable. A coder that cannot yet acquire a dongle waits on it via `pthread_cond_timedwait` rather than busy-looping, and re-checks its acquisition condition every time it wakes (whether from a signal or from the timeout), since a wake-up alone doesn't guarantee the dongle is actually available.
 
 ## Monitor thread
 
-The monitor is independent from the coder routines.
+Runs independently of the coder threads. Responsibilities:
 
-Its responsibilities are:
-
-- check coder burnout deadlines;
-- detect the first coder that misses its deadline;
-- set the simulation termination state;
-- detect when every coder has completed the required number of compilations.
-
-This separates deadline monitoring from the work performed by coder threads.
+- poll every coder's burnout deadline;
+- detect the first burnout;
+- detect full completion (every coder reaching the required compile count);
+- set `simulation_over` when either condition is met.
 
 ---
 
 # Program Structure
-
-The project is divided into several source files so that the responsibilities of the simulation remain separated.
 
 ```text
 coders/
@@ -544,283 +353,148 @@ coders/
     ├── init.c
     ├── threads.c
     ├── routine.c
-    ├── actions.c
+    ├── take_dongles.c
+    ├── release_dongle.c
     ├── monitor.c
     ├── mutex.c
     ├── heap.c
     └── utils.c
-
 ```
 
 ### `codexion.c`
 
-Program entry point and high-level lifecycle:
+Entry point and lifecycle:
 
 ```text
+check argc
+      ↓
 parse arguments
       ↓
-initialize dongles
+initialize dongles, coders, mutexes
       ↓
-initialize coders
+record simulation start time
       ↓
-initialize shared mutexes
+create coder threads + monitor thread
       ↓
-set simulation start time
-      ↓
-create coder + monitor threads
-      ↓
-join threads
+join all threads
       ↓
 cleanup
 ```
 
 ### `init.c`
 
-Initializes the simulation data structures, coders and dongles.
+Argument parsing/validation (`parser`, `validate_numbers`, `is_valid_number`) and initialization of the dongle array and coder array (`init_dongles`, `init_coders`).
 
 ### `threads.c`
 
-Creates and joins coder and monitor threads.
+Creates all coder threads plus the monitor thread (`create_threads`) and joins them all at shutdown (`wait_for_threads`).
 
 ### `routine.c`
 
-Contains the main coder routine and simulation-state checks.
+The coder's main loop (`coder_routine`): take dongles → compile → debug → refactor → repeat, until `is_simulation_over` is true. Each phase sleeps via `interruptible_sleep` rather than a single `usleep`, so the coder can exit mid-phase the moment `simulation_over` is set.
 
-The coder follows the compile → debug → refactor cycle until the simulation ends.
+### `take_dongles.c`
 
-### `actions.c`
+Dongle acquisition: builds a request (sequence number + deadline), inserts it into the target dongle's heap, waits until it's at the front of the heap **and** the dongle is free and off cooldown, then marks it in use. Handles both the ordered-acquisition case (two distinct dongles) and the single-dongle case.
 
-Handles acquiring and releasing dongles.
+### `release_dongle.c`
 
-This is where request insertion, scheduler arbitration, cooldown checks and the ordered dongle-acquisition strategy are coordinated.
+Dongle release: sets the new cooldown timestamp, marks the dongle free, and wakes any waiting coders via `pthread_cond_broadcast`.
 
 ### `monitor.c`
 
-Contains the independent monitor thread responsible for burnout and normal completion detection.
+The independent monitor thread: `check_burnout`, `check_all_done`, and the polling loop that sets `simulation_over`.
 
 ### `heap.c`
 
-Implements the priority queue used by the dongle arbitration mechanism.
+The binary min-heap used for dongle request arbitration: `heap_insert`, `heap_extract_min`, and the shared `is_smaller` comparison (sequence number for FIFO, deadline for EDF).
 
 ### `mutex.c`
 
-Initializes the shared mutexes.
+Initializes and destroys the simulation-wide mutexes (`log_mutex`, `sim_mutex`, `sequence_mutex`).
 
 ### `utils.c`
 
-Contains utility functionality such as millisecond timestamps, sleeping and synchronized state logging.
-Clean-up: Destroys synchronization objects and frees dynamically allocated memory.
+Millisecond timestamps (`get_time`), the chunked `interruptible_sleep` used by every coder phase, synchronized logging (`log_state`), and final cleanup (`cleanup`) — destroying synchronization primitives and freeing all allocated memory.
 
 ---
 
 # Data Structures
 
-The main structures are:
-
 ### `t_data`
 
-Shared simulation state and configuration.
-
-It contains:
-
-- all command-line parameters;
-- coder and dongle arrays;
-- scheduler mode;
-- simulation start time;
-- simulation termination state;
-- synchronization objects;
-- request sequence counter;
-- monitor thread.
+Shared simulation state and configuration: all command-line parameters, the coder and dongle arrays, the scheduler mode, simulation start time, the termination flag, the shared synchronization objects, the sequence counter, and the monitor thread handle.
 
 ### `t_coder`
 
-Represents one coder thread.
-
-It contains:
-
-- coder ID;
-- compilation count;
-- current state;
-- `pthread_t`;
-- state mutex;
-- left/right dongle pointers;
-- pointer to shared simulation data;
-- last compilation start timestamp.
+One coder thread: coder ID, compile count, current state string, `pthread_t`, its own state mutex, pointers to its left/right dongles, a back-pointer to the shared `t_data`, and its last compile start timestamp.
 
 ### `t_dongle`
 
-Represents one shared dongle.
+One shared dongle: dongle ID, mutex, condition variable, in-use flag, cooldown timestamp, and its own request heap.
 
-It contains:
+### `t_heap` / `t_heap_node`
 
-- dongle ID;
-- mutex;
-- condition variable;
-- in-use state;
-- cooldown timestamp;
-- request heap.
-
-### `t_heap`
-
-Array-backed binary min-heap used as the scheduling priority queue.
-
-### `t_heap_node`
-
-Represents one dongle request and stores:
-
-```text
-coder
-sequence
-deadline
-```
+Array-backed binary min-heap and its node (`coder`, `sequence`, `deadline`), used identically by both scheduling modes with only the comparison rule differing.
 
 ---
 
 # Development Process
 
-The project was developed progressively rather than starting immediately with the complete simulation.
+Developed incrementally rather than starting with the full simulation at once.
 
 ## Initial study
 
-The problem was first understood through the Dining Philosophers analogy:
-
-```text
-coders  → philosophers
-dongles → forks
-```
-
-This helped identify the central concurrency problems:
-
-- mutual exclusion;
-- deadlock;
-- starvation;
-- shared-resource arbitration;
-- timing;
-- monitoring.
-
-The project then moved from basic pthread experiments to mutexes, condition variables, data-structure design and finally the full simulation.
+The problem was first understood through the Dining Philosophers analogy (`coders → philosophers`, `dongles → forks`), which surfaced the core concurrency problems: mutual exclusion, deadlock, starvation, shared-resource arbitration, timing, and monitoring.
 
 ## Thread and mutex exercises
 
-Before implementing Codexion, small pthread exercises were used to understand:
-
-- `pthread_create`;
-- `pthread_join`;
-- passing arguments to threads;
-- returning thread results;
-- race conditions;
-- mutex initialization, locking, unlocking and destruction.
-
-A shared-counter exercise was used to observe the difference between unsynchronized and mutex-protected access.
+Small standalone exercises were used first to get comfortable with `pthread_create`, `pthread_join`, passing/returning thread arguments, observing race conditions, and mutex init/lock/unlock/destroy — including a shared-counter exercise contrasting unsynchronized vs. mutex-protected access.
 
 ## Condition variables
 
-Condition-variable exercises focused on:
-
-```text
-pthread_cond_init
-pthread_cond_wait
-pthread_cond_timedwait
-pthread_cond_signal
-pthread_cond_broadcast
-pthread_cond_destroy
-```
-
-The producer/consumer and timed-wait concepts were then applied to waiting for dongle availability.
+Separate exercises covered `pthread_cond_init/wait/timedwait/signal/broadcast/destroy`, using a producer/consumer pattern before applying the same ideas to waiting for dongle availability.
 
 ## Heap
 
-The scheduling queue was developed separately before integrating it into the threaded simulation.
-
-The heap was tested conceptually with both:
-
-```text
-FIFO → sequence number
-EDF  → deadline
-```
-
-This reduced the amount of concurrency logic that had to be debugged simultaneously.
+The priority queue was built and reasoned about on its own — first for FIFO (sequence number), then for EDF (deadline) — before being wired into the threaded simulation, to avoid debugging heap logic and concurrency logic at the same time.
 
 ## Testing
 
-Several test scripts were developed for:
-
-- compilation;
-- argument validation;
-- log format;
-- normal execution;
-- burnout;
-- cooldown;
-- FIFO and EDF;
-- high coder counts;
-- repeated execution;
-- memory leaks;
-- high-contention situations;
-- single-coder behavior;
-- shutdown behavior.
-
-The project was also repeatedly compiled with:
-
-```text
--Wall -Wextra -Werror -pthread
-```
-
-The additional stress tests include runs with up to 200 coders and repeated high-contention executions.
+Test scripts covered: compilation, argument validation, log format, normal execution, burnout, cooldown, both schedulers, high coder counts (up to 200), repeated runs, memory leaks, high-contention scenarios, the single-coder case, and shutdown behavior — with every build run through `-Wall -Wextra -Werror -pthread`.
 
 ---
 
 # Resources
 
-The following resources were used during the learning and development process.
-
 ## Pthreads and concurrency
 
-- CodeVault — pthreads and mutex/condition-variable tutorials:
-  https://www.youtube.com/watch?v=d9s_d28yJq0
-- CodeVault — mutex introduction:
-  https://www.youtube.com/watch?v=raLCgPK-Igc
-- CodeVault — pthread/thread examples:
-  https://www.youtube.com/watch?v=UGQsvVKwe90
-- Introduction to threads:
-  https://www.youtube.com/watch?v=ldJ8WGZVXZk
-- Udacity / pthread condition variables:
-  https://www.youtube.com/watch?v=eQOaaDA92SI
-- GeeksforGeeks — pthread condition wait/signal:
-  https://www.geeksforgeeks.org/condition-wait-signal-multi-threading/
-- University of Kent — Unix/system programming thread study material:
-  https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
-- Colorado lecture material on monitors and condition variables:
-  https://home.cs.colorado.edu/~rhan/CSCI_3753_Spring_2005/CSCI_3753_Spring_2005/Lectures/02_22_05_dp_mon_cv.pdf
+- CodeVault — pthreads and mutex/condition-variable tutorials: https://www.youtube.com/watch?v=d9s_d28yJq0
+- CodeVault — mutex introduction: https://www.youtube.com/watch?v=raLCgPK-Igc
+- CodeVault — pthread/thread examples: https://www.youtube.com/watch?v=UGQsvVKwe90
+- Introduction to threads: https://www.youtube.com/watch?v=ldJ8WGZVXZk
+- Udacity — pthread condition variables: https://www.youtube.com/watch?v=eQOaaDA92SI
+- GeeksforGeeks — pthread condition wait/signal: https://www.geeksforgeeks.org/condition-wait-signal-multi-threading/
+- University of Kent — Unix/system programming thread study material: https://www.cs.kent.edu/~ruttan/sysprog/lectures/multi-thread/multi-thread.html#definition
+- Colorado lecture material on monitors and condition variables: https://home.cs.colorado.edu/~rhan/CSCI_3753_Spring_2005/CSCI_3753_Spring_2005/Lectures/02_22_05_dp_mon_cv.pdf
 
 ## Dining Philosophers and synchronization
 
-The Dining Philosophers problem was used as a conceptual starting point.
-
-- Neso Academy — Dining Philosophers:
-  https://www.youtube.com/watch?v=K52NiClfvyE
-- Dining Philosophers problem explanation:
-  https://www.youtube.com/watch?v=NbwbQQB7xNQ
-- CodeLucky — Dining Philosophers:
-  https://codelucky.com/dining-philosophers/
-- Medium — Dining Philosophers with mutex locks in C:
-  https://apoorvasn.medium.com/solving-the-dining-philosophers-problem-with-mutex-locks-and-c-programming-cee5ac8d35e7
+- Neso Academy — Dining Philosophers: https://www.youtube.com/watch?v=K52NiClfvyE
+- Dining Philosophers problem explanation: https://www.youtube.com/watch?v=NbwbQQB7xNQ
+- CodeLucky — Dining Philosophers: https://codelucky.com/dining-philosophers/
+- Medium — Dining Philosophers with mutex locks in C: https://apoorvasn.medium.com/solving-the-dining-philosophers-problem-with-mutex-locks-and-c-programming-cee5ac8d35e7
 
 ## Codexion-specific references
 
-- Codexion Visualizer:
-  https://codexion-visualizer.sacha-dev.me/
-- Dev.to — Thread in C / Codexion:
-  https://dev.to/yel-bakk/thread-in-c-codexion-42-1ao
-- Overtekk — Codexion concepts/reference repository:
-  https://github.com/Overtekk/Codexion
-- Jamshidbek2000 — philosophers reference implementation:
-  https://github.com/Jamshidbek2000/philosophers_42
+- Codexion Visualizer: https://codexion-visualizer.sacha-dev.me/
+- Dev.to — Thread in C / Codexion: https://dev.to/yel-bakk/thread-in-c-codexion-42-1ao
+- Overtekk — Codexion concepts/reference repository: https://github.com/Overtekk/Codexion
+- Jamshidbek2000 — philosophers reference implementation: https://github.com/Jamshidbek2000/philosophers_42
 
-These repositories and examples were used as learning references and for understanding concepts. They were not used as a source for copying the project's implementation.
+These were used as learning references only, not as a source for copying the implementation.
 
 ## Heap resources
-
-The following resources were consulted while learning how to implement an array-backed binary heap in C:
 
 - https://github.com/charJe/heap
 - https://gist.github.com/nyorain/468f4450b0b6585ac04100199485cde1
@@ -829,20 +503,13 @@ The following resources were consulted while learning how to implement an array-
 
 ## AI usage
 
-AI tools were used as learning and productivity aids during the project.
+AI tools were used as learning and productivity aids: explaining pthread/mutex/condition-variable concepts, discussing the Dining Philosophers analogy, breaking the project into implementation stages, discussing data structure and synchronization strategy options, suggesting test cases and edge cases, reviewing reasoning about deadlock/starvation/burnout, identifying weaknesses in test scripts, and helping structure this documentation.
 
-They were used for:
-
-- explaining pthread concepts and synchronization;
-- explaining mutexes and condition variables;
-- discussing Dining Philosophers and concurrency concepts;
-- helping break the project into smaller implementation stages;
-- discussing possible data structures and synchronization strategies;
-- suggesting test cases and edge cases;
-- reviewing reasoning about deadlock, starvation and burnout;
-- helping identify weaknesses in test scripts;
-- improving documentation structure and README organization.
-
-AI-generated material was treated as something to review and test rather than as authoritative code. The implementation was developed incrementally, and the reasoning behind the synchronization mechanisms is intended to be understood and defendable during peer evaluation.
+AI-generated material was treated as something to review and test rather than as authoritative code — the implementation was built incrementally, and the reasoning behind each synchronization mechanism is intended to be understood and defendable during peer evaluation.
 
 ---
+
+# Current Status / Open Items
+
+- The single-coder path is exercised by the test scripts but is called out here as an area that deserves extra scrutiny during peer evaluation, since it collapses the usual two-dongle logic into one.
+- Leak checking (e.g. `valgrind --leak-check=full`) hasn't been run in every environment this project has been built in and is worth re-confirming on the evaluation machine before defense.

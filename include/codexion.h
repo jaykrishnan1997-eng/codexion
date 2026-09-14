@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 11:24:37 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:24:59 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void		destroy_mutexes(t_data *data);
 
 /* utilities */
 long		get_time(void);
-void		precise_sleep(int milliseconds);
+int			interruptible_sleep(t_coder *coder, int time);
 void		log_state(t_coder *coder, char *message);
 void		cleanup(t_data *data);
 

@@ -6,11 +6,38 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 10:53:32 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:22:50 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+long	get_time(void);
+
+int	interruptible_sleep(t_coder *coder, int time)
+{
+	long	end;
+	long	remaining;
+	int		chunk_ms;
+	int		status;
+
+	status = 0;
+	end = get_time() + time;
+	while (get_time() < end)
+	{
+		if (is_simulation_over(coder->data))
+			return (-1);
+		remaining = end - get_time();
+		chunk = 2;
+		if (remaining < chunk)
+			chunk = (int)remaining;
+		if (chunk > 0)
+			usleep(chunk * 1000);
+	}
+	if (is_simulation_over(coder->data))
+		status = -1;
+	return (status);
+}
 
 bool	checkin(char c, char *str)
 {

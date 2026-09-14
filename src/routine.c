@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 10:18:29 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 10:41:10 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:13:56 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,21 @@ void	*coder_routine(void *arg)
 		coder->last_compile_start = get_time();
 		pthread_mutex_unlock(&coder->state_mutex);
 		log_state(coder, "is compiling");
-		usleep(coder->data->time_to_compile * 1000);
+		if (interruptible_sleep(coder, coder->data->time_to_compile) == -1)
+		{
+			release_dongles(coder);
+			break ;
+		}
 		pthread_mutex_lock(&coder->state_mutex);
 		coder->no_of_compiles++;
 		pthread_mutex_unlock(&coder->state_mutex);
 		release_dongles(coder);
 		log_state(coder, "is debugging");
-		usleep(coder->data->time_to_debug * 1000);
+		if (interruptible_sleep(coder, coder->data->time_to_debug) == -1)
+			break ;
 		log_state(coder, "is refactoring");
-		usleep(coder->data->time_to_refractor * 1000);
+		if (interruptible_sleep(coder, coder->data->time_to_refractor) == -1)
+			break ;
 	}
 	return (NULL);
 }
