@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 11:03:36 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 09:10:15 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/14 12:42:21 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	take_one_dongle(t_coder *coder, t_dongle *dongle)
 	pthread_mutex_unlock(&coder->state_mutex);
 	pthread_mutex_lock(&dongle->mutex);
 	heap_insert(&dongle->request_heap, request, coder->data->scheduler);
-	if (wait_for_dongle(coder, dongle) == -1)
+	if (wait_for_dongle(coder, dongle) == -1
+		|| is_simulation_over(coder->data))
 	{
 		pthread_mutex_unlock(&dongle->mutex);
 		return (-1);
