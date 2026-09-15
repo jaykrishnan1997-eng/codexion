@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/03 15:51:15 by jay-k             #+#    #+#             */
-/*   Updated: 2026/09/14 09:11:35 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 12:53:27 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 9)
 	{
-		printf("Correct usage is:\n");
-		printf("./codexion nc tb tc td tr ncr dc sch\n");
+		printf("Correct usage is:\n\n");
+		printf(
+			"./codexion number_of_coders time_to_burnout"
+			" time_to_compile time_to_debug time_to_refactor"
+			" number_of_compiles_required dongle_cooldown scheduler\n\n");
 		printf("eg: ./codexion 6 3000 200 100 100 2 50 edf\n");
 		return (-1);
 	}
