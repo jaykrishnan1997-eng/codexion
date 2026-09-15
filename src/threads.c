@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 13:40:25 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 10:51:09 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 13:35:36 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int	create_threads(t_data *data)
 				&data->coders[i].thread, NULL, coder_routine, &data->coders[i]
 			) != 0)
 		{
-			perror("Failed to create thread");
+			printf("Failed to create thread");
 			return (-1);
 		}
 		i++;
 	}
 	if (pthread_create(&data->monitor_thread, NULL, monitor_routine, data) != 0)
 	{
-		perror("Failed to create monitor thread");
+		printf("Failed to create monitor thread");
 		return (-1);
 	}
 	return (0);
@@ -44,9 +44,9 @@ void	wait_for_threads(t_data *data)
 	while (i < data->num_coders)
 	{
 		if (pthread_join(data->coders[i].thread, NULL) != 0)
-			perror("Failed to join thread");
+			printf("Failed to join thread");
 		i++;
 	}
 	if (pthread_join(data->monitor_thread, NULL) != 0)
-		perror("Failed to join monitor thread");
+		printf("Failed to join monitor thread");
 }
