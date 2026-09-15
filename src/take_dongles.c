@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 11:03:36 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 12:42:21 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 10:11:31 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,3 +97,23 @@ int	take_dongles(t_coder *coder)
 	}
 	return (take_ordered_dongles(coder));
 }
+// fprintf(stderr, "[EDF DEBUG] coder=%d deadline=%ld seq=%ld\n",
+// 	coder->coder_id, request.deadline, request.sequence);
+//
+// 
+// fprintf(stderr, "[EDF HEAP] dongle=%d size=%d\n",
+// 	dongle->dongle_id, dongle->request_heap.size);
+// int i = 0;
+// while (i < dongle->request_heap.size)
+// {
+// 	fprintf(stderr, " coder=%d coder=%d deadline=%ld seq=%ld\n",
+// 		dongle->request_heap.nodes[i].coder->coder_id,
+// 		dongle->request_heap.nodes[0].deadline,
+// 		dongle->request_heap.nodes[0].sequence);
+// 		i++;
+// }
+// fprintf(stderr,
+// 	"[EDF SELECT] dongle=%d coder=%d deadline=%ld\n",
+// 	dongle->dongle_id,
+// 	dongle->request_heap.nodes[0].coder->coder_id,
+// 	dongle->request_heap.nodes[0].deadline);
