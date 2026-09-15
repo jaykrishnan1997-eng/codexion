@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 11:19:56 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 09:58:33 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 18:41:23 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	init_coders(t_data *data, t_dongle *dongles)
 	{
 		data->coders[c].coder_id = c;
 		data->coders[c].no_of_compiles = 0;
-		data->coders[c].current_state = "idle";
 		data->coders[c].left_dongle = &dongles[c];
 		data->coders[c].right_dongle = &dongles[(c + 1) % data->num_coders];
 		data->coders[c].data = data;

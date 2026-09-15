@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jay-k <jay-k@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/15 10:56:55 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 18:41:35 by jay-k            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_coder
 {
 	int				coder_id;
 	int				no_of_compiles;
-	char			*current_state;
 	pthread_t		thread;
 	pthread_mutex_t	state_mutex;
 	t_dongle		*left_dongle;
