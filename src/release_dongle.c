@@ -6,13 +6,13 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 08:45:21 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 10:39:59 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 10:56:40 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static void	release_one_dongles(t_coder *coder, t_dongle *dongle)
+void	release_one_dongles(t_coder *coder, t_dongle *dongle)
 {
 	pthread_mutex_lock(&dongle->mutex);
 	dongle->available_at = get_time() + coder->data->dongle_cooldown;

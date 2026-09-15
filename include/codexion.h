@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 10:14:22 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 12:24:59 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 10:56:55 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			take_dongles(t_coder *coder);
 
 /* release_dongle*/
 void		release_dongles(t_coder *coder);
+void		release_one_dongles(t_coder *coder, t_dongle *dongle);
 
 /* monitoring */
 void		*monitor_routine(void *arg);

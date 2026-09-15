@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 14:47:54 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 12:27:50 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/15 11:07:26 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,5 @@ void	cleanup(t_data *data)
 	}
 	free(data->dongles);
 	free(data->coders);
-	pthread_mutex_destroy(&data->log_mutex);
-	pthread_mutex_destroy(&data->sim_mutex);
-	pthread_mutex_destroy(&data->sequence_mutex);
+	destroy_mutexes(data);
 }
