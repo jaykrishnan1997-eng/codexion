@@ -181,7 +181,7 @@ Under EDF, the request heap is ordered by burnout deadline instead:
 deadline = last_compile_start + time_to_burnout
 ```
 
-The coder closest to burning out is served first, regardless of arrival order.
+Each dongle serves the pending request for that dongle with the closest burnout deadline, regardless of arrival order.
 
 The heap implementation itself is identical for both modes — only the comparison rule (`is_smaller`) changes based on the `scheduler` string.
 
