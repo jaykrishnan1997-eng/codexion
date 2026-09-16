@@ -505,10 +505,5 @@ These were used as learning references only, not as a source for copying the imp
 
 AI tools were used as learning and productivity aids: explaining pthread/mutex/condition-variable concepts, discussing the Dining Philosophers analogy, breaking the project into implementation stages, discussing data structure and synchronization strategy options, suggesting test cases and edge cases, reviewing reasoning about deadlock/starvation/burnout, identifying weaknesses in test scripts, and helping structure this documentation.
 
-AI-generated material was treated as something to review and test rather than as authoritative code — the implementation was built incrementally, and the reasoning behind each synchronization mechanism is intended to be understood and defendable during peer evaluation.
-
 ---
 
-# Current Status / Open Items
-
-- The single-coder path is exercised by the test scripts but is called out here as an area that deserves extra scrutiny during peer evaluation, since it collapses the usual two-dongle logic into one.
