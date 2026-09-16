@@ -148,7 +148,7 @@ The coders sit in a circle:
 
 Coder `1` is adjacent to coder `N`. Each coder has a left and a right dongle, and each dongle (except in the single-coder case) is shared by exactly two adjacent coders.
 
-**Single-coder case:** when `number_of_coders` is `1`, there is only one dongle, and the coder's left and right pointers both refer to it. Acquiring and releasing it happens once, but two `has taken a dongle` lines are still logged, matching the two-dongle protocol used for every other coder count.
+**Single-coder case:** when `number_of_coders` is `1`, there is only one dongle, and the coder's left and right pointers both refer to it. The two-dongle acquisition protocol is not special-cased away: the coder takes the dongle once, logs `has taken a dongle`, then attempts to take the *same* dongle again as its second required dongle — which can never succeed, since nothing else will ever release it. This is intentional: it demonstrates that the burnout monitor correctly detects a coder that can make no further progress. With `number_of_coders 1`, the simulation therefore always ends in burnout rather than successful completion, regardless of how large `time_to_burnout` is set — a larger value only delays when the burnout fires.
 
 ### Compilation
 
@@ -246,7 +246,7 @@ Because every coder compares its own left/right dongle IDs before acquiring, no 
 
 — are either unavoidable (mutual exclusion: a dongle can only be used by one coder) or not addressed by this ordering trick and aren't separately broken here.
 
-The single-coder case is handled as its own branch, since both logical dongle sides map to the same physical dongle.
+The single-coder case is worth calling out separately, since a lone coder's left and right dongle pointers refer to the same physical dongle: it can never truly acquire "two" dongles — after taking it once, its second request for that same, now-held, dongle can never be granted. Rather than special-casing this away, the simulation lets it play out naturally. This is deadlock in the strict sense (the coder can never proceed), but the independent monitor thread still detects it via burnout and shuts the simulation down cleanly instead of hanging forever.
 
 ## Resource duplication
 
