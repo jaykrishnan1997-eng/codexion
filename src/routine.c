@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 10:18:29 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/14 12:58:39 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/16 11:09:16 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@ void	*coder_routine(void *arg)
 			break ;
 		if (start_compile(coder) == -1)
 			break ;
+		if (is_simulation_over(coder->data))
+			break ;
 		log_state(coder, "is debugging");
 		if (interruptible_sleep(coder, coder->data->time_to_debug) == -1)
+			break ;
+		if (is_simulation_over(coder->data))
 			break ;
 		log_state(coder, "is refactoring");
 		if (interruptible_sleep(coder, coder->data->time_to_refractor) == -1)
