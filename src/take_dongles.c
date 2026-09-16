@@ -6,7 +6,7 @@
 /*   By: jkrishna <jkrishna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/08 11:03:36 by jkrishna          #+#    #+#             */
-/*   Updated: 2026/09/15 11:04:20 by jkrishna         ###   ########.fr       */
+/*   Updated: 2026/09/16 09:47:50 by jkrishna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,5 @@ int	take_dongles(t_coder *coder)
 {
 	if (is_simulation_over(coder->data))
 		return (-1);
-	if (coder->left_dongle == coder->right_dongle)
-	{
-		if (take_one_dongle(coder, coder->left_dongle) == -1)
-			return (-1);
-		log_state(coder, "has taken a dongle");
-		log_state(coder, "has taken a dongle");
-		return (0);
-	}
 	return (take_ordered_dongles(coder));
 }
