@@ -503,7 +503,7 @@ These were used as learning references only, not as a source for copying the imp
 
 ## AI usage
 
-AI tools were used as learning and productivity aids: explaining pthread/mutex/condition-variable concepts, discussing the Dining Philosophers analogy, breaking the project into implementation stages, discussing data structure and synchronization strategy options, suggesting test cases and edge cases, reviewing reasoning about deadlock/starvation/burnout, identifying weaknesses in test scripts, and helping structure this documentation.
+AI tools were used as learning and productivity aids: explaining pthread/mutex/condition-variable concepts, discussing the Dining Philosophers analogy, breaking the project into implementation stages, discussing data structure and synchronization strategy options, providing information on resources to learn from, suggesting test cases and edge cases, reviewing reasoning about deadlock/starvation/burnout, identifying weaknesses in test scripts, and helping structure this documentation.
 
 ---
 
